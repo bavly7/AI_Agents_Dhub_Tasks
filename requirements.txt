@@ -9,3 +9,9 @@ pydantic
 dotenv
 langchain-groq
 mcp
+langchain-community 
+langchain-huggingface  
+pypdf 
+faiss-cpu 
+python-dotenv 
+sentence-transformers
