@@ -1,8 +1,10 @@
 # 🤖 AI Engineering Tasks & Agentic Systems
 
-Welcome to the AI Engineering Practice & Frameworks repository!
+Welcome to the **AI Engineering Practice & Frameworks** repository!
 
-This project showcases hands-on implementations of modern LLM architectures, structured data extraction, autonomous multi-tool AI agents, domain-specific LLM fine-tuning, and Retrieval-Augmented Generation (RAG) using LangChain, LangGraph, Pydantic, Hugging Face, FAISS, PEFT, and Groq.
+This project showcases hands-on implementations of modern LLM architectures, structured data extraction, autonomous multi-tool AI agents, domain-specific LLM fine-tuning, Retrieval-Augmented Generation (RAG), and conversational memory management using **LangChain, LangGraph, Pydantic, Hugging Face, FAISS, PEFT, and Groq**.
+
+---
 
 ## 📌 Repository Overview
 
@@ -10,71 +12,82 @@ This repository serves as a showcase of practical AI engineering solutions desig
 
 ### Tasks
 
-| Task | Description |
-|------|-------------|
-| **Task 1: Structured Information Extractor** | Enforcing strict schema outputs on unstructured candidate data |
-| **Task 2: Autonomous Multi-Tool AI Agent** | Building a stateful, tool-calling agent using LangGraph and custom APIs |
-| **Task 3: Domain-Specific LLM Fine-Tuning** | Fine-tuning an open-source LLM for specialized medical customer support |
-| **Task 4: Simple RAG System** | Building a retriever and generator system using FAISS and PDF documents |
-
-## ⚙️ Core Stack & Tools
-
-| Category | Technologies |
-|----------|--------------|
-| **LLM Frameworks** | LangChain, LangGraph |
-| **Fine-Tuning & Training** | Hugging Face Transformers, PEFT, TRL, BitsAndBytes |
-| **Vector Databases & RAG** | FAISS, HuggingFaceEmbeddings, PyPDF |
-| **Data Validation** | Pydantic v2 |
-| **LLM Engine** | Groq — openai/gpt-oss-120b, Mistral 7B |
-| **Geolocation** | geopy, timezonefinder, pytz |
-| **Database** | SQLite |
-| **Environment Management** | python-dotenv |
-| **Language** | Python |
+| Task                                                  | Description                                                                                    |
+| ----------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| **Task 1: Structured Information Extractor**          | Enforcing strict schema outputs on unstructured candidate data                                 |
+| **Task 2: Autonomous Multi-Tool AI Agent**            | Building a stateful, tool-calling agent using LangGraph and custom APIs                        |
+| **Task 3: Domain-Specific LLM Fine-Tuning**           | Fine-tuning an open-source LLM for specialized medical customer support                        |
+| **Task 4: Simple RAG System**                         | Building a retriever and generator system using FAISS and PDF documents                        |
+| **Task 6: Advanced Conversational Memory Management** | Implementing stateful conversational memory with rolling summaries and persistent JSON storage |
 
 ---
 
-## 🚀 Task 1: Structured Information Extractor
+## ⚙️ Core Stack & Tools
 
-### 📋 Objective
+| Category                   | Technologies                                       |
+| -------------------------- | -------------------------------------------------- |
+| **LLM Frameworks**         | LangChain, LangGraph                               |
+| **Fine-Tuning & Training** | Hugging Face Transformers, PEFT, TRL, BitsAndBytes |
+| **Vector Databases & RAG** | FAISS, HuggingFaceEmbeddings, PyPDF                |
+| **Data Validation**        | Pydantic v2                                        |
+| **LLM Engine**             | Groq — `openai/gpt-oss-120b`, Mistral 7B           |
+| **Geolocation**            | geopy, timezonefinder, pytz                        |
+| **Database**               | SQLite, JSON                                       |
+| **Environment Management** | python-dotenv                                      |
+| **Language**               | Python                                             |
+
+---
+
+# 🚀 Task 1: Structured Information Extractor
+
+## 📋 Objective
 
 Develop a reliable information extraction engine that transforms unstructured job applications, resumes, or self-introductions into strict, validated JSON formats without hallucinating missing information.
 
-### 💡 Implementation Details
+## 💡 Implementation Details
 
-#### 1. Schema Definition
-Created a Candidate Pydantic BaseModel enforcing a structured schema containing:
-- Candidate_name
-- Years_of_experience
-- Current_role
-- Skills
-- Highest_Education
+### 1. Schema Definition
+
+Created a `Candidate` Pydantic `BaseModel` enforcing a structured schema containing:
+
+* `Candidate_name`
+* `Years_of_experience`
+* `Current_role`
+* `Skills`
+* `Highest_Education`
 
 Pydantic ensures that the extracted information follows the expected data types and structure.
 
-#### 2. Structured Parsing
-Integrated LangChain's PydanticOutputParser to inject the required JSON schema and formatting instructions into the LLM prompt. This ensures that the model returns data that can be validated against the predefined Pydantic schema.
+### 2. Structured Parsing
 
-#### 3. Strict Guardrails
+Integrated LangChain's `PydanticOutputParser` to inject the required JSON schema and formatting instructions into the LLM prompt.
+
+This ensures that the model returns data that can be validated against the predefined Pydantic schema.
+
+### 3. Strict Guardrails
+
 The extraction prompt explicitly instructs the model to:
-- Never fabricate missing information
-- Return `null` when a parameter is unavailable
-- Return an empty array `[]` when no skills are available
-- Extract only information supported by the provided text
 
-#### 4. LCEL Chain Assembly
-The extraction pipeline was implemented using LangChain Expression Language (LCEL):
+* Never fabricate missing information
+* Return `null` when a parameter is unavailable
+* Return an empty array `[]` when no skills are available
+* Extract only information supported by the provided text
 
-```
+### 4. LCEL Chain Assembly
+
+The extraction pipeline was implemented using **LangChain Expression Language (LCEL)**:
+
+```text
 PromptTemplate
       ↓
-   ChatGroq
+ChatGroq
       ↓
 PydanticOutputParser
 ```
 
 This creates a clean and modular extraction workflow.
 
-### 💻 Expected Output
+## 💻 Expected Output
 
 ```json
 {
@@ -92,81 +105,107 @@ This creates a clean and modular extraction workflow.
 
 ---
 
-## 🛠️ Task 2: Autonomous Multi-Tool AI Agent
+# 🛠️ Task 2: Autonomous Multi-Tool AI Agent
 
-### 📋 Objective
+## 📋 Objective
 
-Build an AI Agent capable of dynamic goal execution. The agent interprets natural-language queries, autonomously selects the appropriate tool, extracts the required parameters, interacts with internal databases/APIs, and maintains the conversation flow statefully.
+Build an AI Agent capable of dynamic goal execution.
 
-### 🧠 Agent Architecture
+The agent interprets natural-language queries, autonomously selects the appropriate tool, extracts the required parameters, interacts with internal databases and APIs, and maintains the conversation flow statefully.
 
-The agent was implemented using LangGraph StateGraph, with conditional routing and custom tool integrations.
+## 🧠 Agent Architecture
 
-### 🧰 Available Tools
+The agent was implemented using `LangGraph StateGraph`, with conditional routing and custom tool integrations.
 
-#### 📊 Analytics Tool — `analytics_tool`
+## 🧰 Available Tools
+
+### 📊 Analytics Tool — `analytics_tool`
+
 Computes statistical metrics over numerical arrays:
-- Average
-- Maximum
-- Minimum
-- Count
 
-**Example:**
-```
+* Average
+* Maximum
+* Minimum
+* Count
+
+Example:
+
+```text
 Average: 25.4
 Maximum: 50
 Minimum: 10
 Count: 8
 ```
 
-#### 🌍 Location Information Tool — `location_tool`
-Provides geographic and timezone information for cities and landmarks. It integrates:
-- geopy
-- Nominatim API
-- timezonefinder
-- pytz
+### 🌍 Location Information Tool — `location_tool`
+
+Provides geographic and timezone information for cities and landmarks.
+
+It integrates:
+
+* geopy
+* Nominatim API
+* timezonefinder
+* pytz
 
 The tool can retrieve:
-- Exact location information
-- Country
-- Timezone
-- Current local time
 
-#### 📅 Schedule Management Tool — `scheduler_tool`
-Connects to a local SQLite database (`schedule.db`). The scheduler supports:
-- Event creation
-- Event deletion
-- Schedule management
-- Automatic conflict detection
+* Exact location information
+* Country
+* Timezone
+* Current local time
+
+### 📅 Schedule Management Tool — `scheduler_tool`
+
+Connects to a local SQLite database:
+
+```text
+schedule.db
+```
+
+The scheduler supports:
+
+* Event creation
+* Event deletion
+* Schedule management
+* Automatic conflict detection
 
 Before inserting a new event, the tool checks whether an existing event conflicts with the requested time.
 
-### 🔄 Agentic Workflow Architecture
+## 🔄 Agentic Workflow Architecture
 
-The LangGraph workflow consists of three main components:
+The LangGraph workflow consists of three main components.
 
-#### 1. Agent Node — `call_model`
+### 1. Agent Node — `call_model`
+
 The agent evaluates:
-- Conversation history
-- System instructions
-- Available tools
-- User intent
+
+* Conversation history
+* System instructions
+* Available tools
+* User intent
 
 It then decides whether to:
-- Call a tool
-- Return a final response
 
-#### 2. Tool Node — `ToolNode`
-ToolNode executes the tool calls generated by the LLM. The available Python tools are executed natively through LangGraph's tool-calling mechanism.
+* Call a tool
+* Return a final response
 
-#### 3. Conditional Edge — `should_continue`
+### 2. Tool Node — `ToolNode`
+
+`ToolNode` executes the tool calls generated by the LLM.
+
+The available Python tools are executed natively through LangGraph's tool-calling mechanism.
+
+### 3. Conditional Edge — `should_continue`
+
 The conditional routing determines whether the workflow should:
-- Continue to the tools when tool calls are present
-- Terminate at END when the agent has generated the final response
 
-### 📐 Workflow Diagram
+* Continue to the tools when tool calls are present
+* Terminate at `END` when the agent has generated the final response
 
-```
+## 📐 Workflow Diagram
+
+```text
                  +-----------+
                  |   START   |
                  +-----+-----+
@@ -198,7 +237,7 @@ The conditional routing determines whether the workflow should:
 
 This creates an iterative agentic loop:
 
-```
+```text
 User Request
      ↓
 Agent Reasoning
@@ -216,74 +255,94 @@ Final Response
 
 ---
 
-## 🚀 Task 3: Domain-Specific LLM Fine-Tuning
+# 🚀 Task 3: Domain-Specific LLM Fine-Tuning
 
-### 📋 Objective
+## 📋 Objective
 
 The goal of this project is to fine-tune a pre-trained open-source language model to specialize in answering technical support questions, transforming a general-purpose model into a highly focused, domain-specific assistant for medical conversations.
 
-### 💡 Implementation Details
+## 💡 Implementation Details
 
-#### 1. Model Initialization
-Loaded the pre-trained open-source model: `mistralai/Mistral-7B-Instruct-v0.3`
+### 1. Model Initialization
 
-To drastically reduce memory usage, the model was loaded using 4-bit quantization through BitsAndBytesConfig.
+Loaded the pre-trained open-source model:
 
-#### 2. Dataset Preparation
-Extracted and prepared the `FreedomIntelligence/medical-o1-reasoning-SFT` dataset, which contains structured medical Q&A pairs.
+```text
+mistralai/Mistral-7B-Instruct-v0.3
+```
+
+To drastically reduce memory usage, the model was loaded using **4-bit quantization** through `BitsAndBytesConfig`.
+
+### 2. Dataset Preparation
+
+Extracted and prepared the following dataset:
+
+```text
+FreedomIntelligence/medical-o1-reasoning-SFT
+```
+
+The dataset contains structured medical Q&A pairs.
 
 The data was mapped and formatted into Mistral's instruction style:
-```
+
+```text
 <s>[INST] {question} [/INST] {answer} </s>
 ```
 
 This format prepares the dataset for instruction fine-tuning.
 
-#### 3. Parameter-Efficient Fine-Tuning (PEFT)
-Configured and applied LoRA (Low-Rank Adaptation). The LoRA configuration used:
+### 3. Parameter-Efficient Fine-Tuning (PEFT)
 
-| Parameter | Value |
-|-----------|-------|
-| Rank (r) | 16 |
-| Alpha (lora_alpha) | 32 |
-| Dropout | 0.05 |
+Configured and applied **LoRA (Low-Rank Adaptation)**.
+
+| Parameter            | Value |
+| -------------------- | ----- |
+| Rank (`r`)           | 16    |
+| Alpha (`lora_alpha`) | 32    |
+| Dropout              | 0.05  |
 | Trainable Parameters | ~1.1% |
 
 The adapters target attention projection layers such as:
-```
-q_proj
-k_proj
-v_proj
-...
-```
+
+* `q_proj`
+* `k_proj`
+* `v_proj`
+* Other attention projection layers
 
 This significantly reduces the number of parameters that need to be trained.
 
-#### 4. Training and Persistence
-The model was trained for **2 epochs**. A larger effective batch size was simulated using gradient accumulation.
+### 4. Training and Persistence
+
+The model was trained for **2 epochs**.
+
+A larger effective batch size was simulated using **gradient accumulation**.
 
 The resulting:
-- Fine-tuned adapter weights
-- Tokenizer configuration
+
+* Fine-tuned adapter weights
+* Tokenizer configuration
 
 were successfully saved locally.
 
-#### 5. Evaluation and Integration
+### 5. Evaluation and Integration
+
 Generated and compared responses before and after fine-tuning to evaluate the model's adaptation to the medical domain.
 
 The specialized model was then integrated into a LangChain workflow using:
-- HuggingFacePipeline
-- PromptTemplate
-- StrOutputParser
 
-### 💻 Expected Output
+* `HuggingFacePipeline`
+* `PromptTemplate`
+* `StrOutputParser`
 
-```
+## 💻 Expected Output
+
+```text
 ================================================================================
 COMPARISON: BEFORE vs AFTER FINE-TUNING
 ================================================================================
 
 📝 Question:
+
 If suddenly when I walk my stomach started to hurt me,
 what do you think it is and what is your suggestion?
 
@@ -312,61 +371,216 @@ overall cardiovascular health.
 
 ---
 
-## 📚 Task 4: Simple RAG System (Retrieval-Augmented Generation)
+# 📚 Task 4: Simple RAG System
 
-### 📋 Objective
+## 📋 Objective
 
-Use RAG (Retrieval-Augmented Generation) to answer questions based on a PDF document serving as a knowledge base. The goal is to build a robust system (retriever + generator) that strictly grounds its answers in the provided context and refuses to hallucinate.
+Use **RAG (Retrieval-Augmented Generation)** to answer questions based on PDF documents serving as a knowledge base.
 
-### 💡 Implementation Details
+The goal is to build a robust system consisting of a retriever and generator that strictly grounds its answers in the provided context and refuses to hallucinate.
 
-#### 1. Document Loading and Splitting
-Loaded 7 PDFs containing course material on Parallel Computing from a local directory. The documents were split using LangChain's RecursiveCharacterTextSplitter:
-- **Chunk Size:** 1000 characters
-- **Chunk Overlap:** 150 characters
-- **Result:** The text was successfully divided into 56 semantic chunks to optimize vector retrieval.
+## 💡 Implementation Details
 
-#### 2. Vector Database & Embedding
-Initialized an open-source, lightweight embedding model (`all-MiniLM-L6-v2`) via Hugging Face. The 56 chunks were transformed into numerical vectors and stored in a FAISS (Facebook AI Similarity Search) database using a Flat Index (L2 distance brute-force search) for 100% retrieval accuracy on small datasets.
+### 1. Document Loading and Splitting
 
-#### 3. Action 1: Retriever Testing
-Before passing data to the LLM, a dedicated retrieval flow was built to search the FAISS database and return the top 3 most relevant chunks based on a user's query, ensuring the semantic search successfully isolates the exact paragraphs needed.
+Loaded **7 PDFs** containing course material on Parallel Computing from a local directory.
 
-#### 4. Action 2: Generation with Strict Guardrails
-Integrated Groq (`openai/gpt-oss-120b`) as the generator LLM. A highly restrictive PromptTemplate was engineered to prevent hallucination. The prompt explicitly forces the model to reply with a predefined fallback string if the answer is missing from the retrieved context:
-> *"Ana ma3rafsh el ma3looma de, msh mawgooda fe el PDFs."*
+The documents were split using LangChain's `RecursiveCharacterTextSplitter`.
 
-#### 5. Final RAG Chain
-Combined the retriever and the LLM using LangChain's `create_retrieval_chain` and `create_stuff_documents_chain` to create an end-to-end question-answering pipeline.
+Configuration:
 
-### 💻 Expected Output
+* Chunk Size: `1000` characters
+* Chunk Overlap: `150` characters
+* Result: `56` semantic chunks
 
+This structure optimizes the documents for vector retrieval.
+
+### 2. Vector Database & Embedding
+
+Initialized the following lightweight embedding model:
+
+```text
+all-MiniLM-L6-v2
 ```
+
+The 56 chunks were transformed into numerical vectors and stored in a **FAISS** vector database.
+
+The implementation uses a **Flat Index with L2 distance** for brute-force similarity search, which is suitable for this small dataset.
+
+### 3. Action 1: Retriever Testing
+
+Before passing data to the LLM, a dedicated retrieval flow was built to:
+
+* Search the FAISS database
+* Retrieve the top 3 most relevant chunks
+* Verify that semantic search isolates the relevant context
+
+### 4. Action 2: Generation with Strict Guardrails
+
+Integrated Groq using:
+
+```text
+openai/gpt-oss-120b
+```
+
+as the generator LLM.
+
+A restrictive `PromptTemplate` was engineered to reduce hallucination.
+
+The prompt explicitly forces the model to return a fallback response when the answer is missing from the retrieved context:
+
+```text
+Ana ma3rafsh el ma3looma de, msh mawgooda fe el PDFs.
+```
+
+### 5. Final RAG Chain
+
+Combined the retriever and the LLM using:
+
+* `create_retrieval_chain`
+* `create_stuff_documents_chain`
+
+This creates an end-to-end question-answering pipeline.
+
+## 💻 Expected Output
+
+```text
 --- Running Full RAG Pipeline ---
 
-Question: What is the difference between shared memory and distributed memory in parallel computing?
-Answer: **Shared memory**  
-- One global memory space that all processors can address directly.  
-- Programming is easy because data are accessed with ordinary pointers and communication is just memory reads/writes.  
-- Fast data sharing (direct memory access).  
-- Drawbacks: limited scalability (traffic and cache‑coherency overhead grow as CPUs are added), need for explicit synchronization, and high hardware cost/complexity for large systems.  
+Question:
+What is the difference between shared memory and distributed memory in parallel computing?
 
-**Distributed (non‑shared) memory**  
-- Each processor has its own private local memory; processors exchange data only via a network.  
-- Memory size scales linearly with the number of processors, and local memory accesses are fast and free of cache‑coherency issues.  
-- Drawbacks: the programmer must explicitly manage communication between processors and map data structures to the distributed layout, which is more difficult.  
+Answer:
 
-**Key difference:** Shared memory provides a single, globally accessible address space with simpler programming but poor scalability, whereas distributed memory gives each processor its own memory, offering scalable memory capacity and fast local access at the cost of more complex, explicit communication handling.
+Shared memory
+- One global memory space that all processors can address directly.
+- Programming is easier because data are accessed with ordinary pointers.
+- Communication happens through memory reads and writes.
+- Fast data sharing through direct memory access.
+- Drawbacks include limited scalability, cache-coherency overhead,
+  synchronization requirements, and higher hardware complexity.
 
-Question: How to bake a chocolate cake?
-Answer:  I don't know, this information is not in the context
+Distributed memory
+- Each processor has its own private local memory.
+- Processors exchange data through a network.
+- Memory capacity scales with the number of processors.
+- Local memory access is fast and avoids cache-coherency issues.
+- The programmer must explicitly manage communication and data distribution.
+
+Key difference:
+
+Shared memory provides a single globally accessible address space with
+simpler programming but limited scalability, whereas distributed memory
+gives each processor its own memory, providing better scalability at the
+cost of more complex communication management.
+```
+
+Example of an unsupported question:
+
+```text
+Question:
+How to bake a chocolate cake?
+
+Answer:
+I don't know, this information is not in the context.
 ```
 
 ---
 
-## 🗂️ Project Structure
+# 🧠 Task 6: Advanced Conversational Memory Management
 
+## 📋 Objective
+
+Build a robust, stateful memory system for conversational agents to maintain context over long interactions.
+
+This implementation integrates:
+
+* Rolling summaries
+* Conversation history
+* Persistent JSON storage
+
+to manage conversation state effectively.
+
+## 💡 Implementation Details
+
+### 1. Rolling Summarization
+
+Implemented a dynamic summary engine:
+
+```python
+_summarize_conversation()
 ```
+
+The function condenses older messages into a compact summary while preserving:
+
+* Essential information
+* Key topics discussed
+* Important facts
+* Decisions made
+
+### 2. Object-Oriented State Management (OOP)
+
+Encapsulated the entire workflow within a modular:
+
+```python
+ConversationalAgent
+```
+
+class.
+
+The agent:
+
+* Automatically creates a context prompt
+* Combines a system message, rolling summary, and user input
+* Maintains a complete `conversation_history`
+* Stores timestamps for each interaction
+
+### 3. Persistent Storage (JSON)
+
+Added serialization methods:
+
+```python
+save_conversation()
+load_conversation()
+```
+
+These allow the conversation history and summary to be saved locally.
+
+Default file:
+
+```text
+conversation_log.json
+```
+
+This allows sessions to be paused and loaded later.
+
+## 💻 Expected Output
+
+### JSON Save Format
+
+```json
+{
+  "conversation_history": [
+    {
+      "user": "Hi! My name is Bavly and I'm an AI engineer working on AI projects.",
+      "assistant": "Hello Bavly! 👋 Nice to meet you. It’s great to connect with an AI engineer. What kind of AI projects are you working on right now? Anything exciting you’d like to share or discuss?",
+      "timestamp": "2026-09-14T13:54:19.260451"
+    },
+    {
+      "user": "I'm 21 years old.",
+      "assistant": "Thanks for letting me know! 😊 Is there anything specific you’d like to chat about or any project you’re working on that I can help with?",
+      "timestamp": "2026-09-14T13:56:14.619902"
+    }
+  ],
+  "summary": "**Summary of Conversation**\n\n- **Participants**\n  - *User (Bavly)*: AI engineer, 21 years old, working on a chatbot with memory management.\n  - *Assistant*: Provides guidance and acknowledges user information."
+}
+```
+
+---
+
+# 🗂️ Project Structure
+
+```text
 .
 ├── Task 1/
 │   ├── task1.ipynb
@@ -392,8 +606,12 @@ Answer:  I don't know, this information is not in the context
 ├── Task 4 - RAG/
 │   ├── pdfs/                     # Parallel computing knowledge base
 │   │   └── ...                   # 7 PDF documents
-│   ├── faiss_parallel_computing_index/ # Saved FAISS vector database
+│   ├── faiss_parallel_computing_index/
 │   └── task4.ipynb               # RAG pipeline implementation
+│
+├── Task 6 - Memory/
+│   ├── agent_with_memory.ipynb   # Conversational memory implementation
+│   └── conversation_log.json     # Saved conversation state
 │
 ├── .env                          # Environment variables
 ├── .gitignore
@@ -410,39 +628,42 @@ Answer:  I don't know, this information is not in the context
 
 ---
 
-## ⚙️ Setup & Installation
+# ⚙️ Setup & Installation
 
-### 1. Clone the Repository
+## 1. Clone the Repository
 
 ```bash
 git clone https://github.com/your-username/your-repo-name.git
 cd your-repo-name
 ```
 
-### 2. Create a Virtual Environment
+## 2. Create a Virtual Environment
 
-**Windows**
+### Windows
+
 ```bash
 python -m venv .venv
 .venv\Scripts\activate
 ```
 
-**Linux / macOS**
+### Linux / macOS
+
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 ```
 
-### 3. Install Dependencies
+## 3. Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 4. Configure Environment Variables
+## 4. Configure Environment Variables
 
 Create a `.env` file in the root directory:
-```
+
+```env
 GROQ_API_KEY=your_groq_api_key_here
 ```
 
@@ -450,7 +671,7 @@ Replace `your_groq_api_key_here` with your actual Groq API key.
 
 ---
 
-## ▶️ Running the Project
+# ▶️ Running the Project
 
 After installing the dependencies and configuring the environment variables, run Task 2 from its directory:
 
@@ -459,71 +680,93 @@ cd "Task 2 - langgraph"
 python main.py
 ```
 
-### 📓 Running Task 1, Task 3 & Task 4
+---
+
+# 📓 Running Task 1, Task 3, Task 4 & Task 6
 
 Start Jupyter Notebook:
+
 ```bash
 jupyter notebook
 ```
 
 Then open:
-- `Task 1/task1.ipynb`
-- `Task 3/task3.ipynb`
-- `Task 4 - RAG/task4.ipynb`
 
----
+```text
+Task 1/task1.ipynb
 
-## 🎯 Key Concepts Demonstrated
+Task 3/task3.ipynb
 
-This repository demonstrates practical experience with:
+Task 4 - RAG/task4.ipynb
 
-### LLM & Prompt Engineering
-- LLM structured output
-- Prompt engineering & Guardrails
-- LangChain Output Parsers
-- LangChain Expression Language (LCEL)
-
-### Agentic AI
-- LLM tool calling
-- LangGraph StateGraph
-- Conditional graph routing
-- Stateful AI agents
-- Multi-tool orchestration
-- Agentic loops
-- Tool execution
-
-### Vector Databases & Retrieval (RAG)
-- Document parsing and chunking
-- Semantic search and embeddings
-- FAISS Vector Database integration
-- Retrieval-Augmented Generation pipelines
-- Anti-hallucination prompting techniques
-
-### Data & Backend Integration
-- Pydantic schema validation
-- External API integration
-- Geolocation and timezone services
-- SQLite database integration
-- Schedule conflict detection
-- Environment and API-key management
-
-### LLM Fine-Tuning
-- Parameter-Efficient Fine-Tuning (PEFT)
-- LoRA
-- 4-bit model quantization
-- Hugging Face Transformers
-- SFTTrainer
-- Domain-specific assistant training
-
----
-
-## 🧠 Architecture Summary
-
-The repository progresses from structured LLM extraction, to autonomous agentic workflows, to domain-specific model fine-tuning, and finally Retrieval-Augmented Generation.
-
-### Task 1 — Structured Information Extraction
-
+Task 6 - Memory/agent_with_memory.ipynb
 ```
+
+---
+
+# 🎯 Key Concepts Demonstrated
+
+## LLM & Prompt Engineering
+
+* LLM structured output
+* Prompt engineering
+* Guardrails
+* LangChain Output Parsers
+* LangChain Expression Language (LCEL)
+
+## Agentic AI
+
+* LLM tool calling
+* LangGraph `StateGraph`
+* Conditional graph routing
+* Stateful AI agents
+* Multi-tool orchestration
+* Agentic loops
+* Tool execution
+
+## Vector Databases & Retrieval (RAG)
+
+* Document parsing and chunking
+* Semantic search and embeddings
+* FAISS Vector Database integration
+* Retrieval-Augmented Generation pipelines
+* Anti-hallucination prompting techniques
+
+## Memory & State Management
+
+* Rolling conversation summaries
+* Object-Oriented Bot Architectures for session state
+* JSON persistence for saving and loading conversation histories
+
+## Data & Backend Integration
+
+* Pydantic schema validation
+* External API integration
+* Geolocation and timezone services
+* SQLite database integration
+* Schedule conflict detection
+* Environment and API-key management
+
+## LLM Fine-Tuning
+
+* Parameter-Efficient Fine-Tuning (PEFT)
+* LoRA
+* 4-bit model quantization
+* Hugging Face Transformers
+* `SFTTrainer`
+* Domain-specific assistant training
+
+---
+
+# 🧠 Architecture Summary
+
+The repository progresses from structured LLM extraction, to autonomous agentic workflows, domain-specific model fine-tuning, Retrieval-Augmented Generation, and stateful conversational memory.
+
+---
+
+## Task 1 — Structured Information Extraction
+
+```text
 ┌─────────────────────────────────────────┐
 │              Task 1                     │
 │      Structured Information Extraction  │
@@ -540,86 +783,118 @@ The repository progresses from structured LLM extraction, to autonomous agentic 
 └─────────────────────────────────────────┘
 ```
 
-### Task 2 — Autonomous AI Agent
+---
 
-```
+## Task 2 — Autonomous AI Agent
+
+```text
 ┌─────────────────────────────────────────┐
 │              Task 2                     │
 │       Autonomous AI Agent               │
 │                                         │
 │  User Request                           │
-│       ↓                                 │
+│        ↓                                │
 │  LangGraph Agent                        │
-│       ↓                                 │
+│        ↓                                │
 │  Tool Selection                         │
-│       ↓                                 │
+│        ↓                                │
 │  ┌──────────┬───────────┬───────────┐   │
 │  │ Analytics│ Location  │ Scheduler │   │
 │  └──────────┴───────────┴───────────┘   │
-│       ↓                                 │
+│        ↓                                │
 │  Tool Results                           │
-│       ↓                                 │
+│        ↓                                │
 │  Agent Re-evaluation                    │
-│       ↓                                 │
+│        ↓                                │
 │  Final Response                         │
 └─────────────────────────────────────────┘
 ```
 
-### Task 3 — Domain-Specific LLM Fine-Tuning
+---
 
-```
+## Task 3 — Domain-Specific LLM Fine-Tuning
+
+```text
 ┌─────────────────────────────────────────┐
 │              Task 3                     │
 │   Domain-Specific LLM Fine-Tuning       │
 │                                         │
 │  Pre-trained Base Model (Mistral 7B)    │
-│       ↓                                 │
+│        ↓                                │
 │  Medical Q&A Dataset Processing         │
-│       ↓                                 │
+│        ↓                                │
 │  Apply LoRA Adapters (PEFT)             │
-│       ↓                                 │
+│        ↓                                │
 │  Train via SFTTrainer                   │
-│       ↓                                 │
+│        ↓                                │
 │  LangChain Integration & Output         │
 └─────────────────────────────────────────┘
 ```
 
-### Task 4 — Retrieval-Augmented Generation (RAG)
+---
 
-```
+## Task 4 — Retrieval-Augmented Generation (RAG)
+
+```text
 ┌─────────────────────────────────────────┐
 │              Task 4                     │
 │       Simple RAG Architecture           │
 │                                         │
 │  PDF Documents                          │
-│       ↓                                 │
+│        ↓                                │
 │  Text Splitter (Chunks)                 │
-│       ↓                                 │
+│        ↓                                │
 │  HuggingFace Embeddings                 │
-│       ↓                                 │
+│        ↓                                │
 │  FAISS Vector Database (Retriever)      │
-│       ↓                                 │
+│        ↓                                │
 │  Context + User Query                   │
-│       ↓                                 │
+│        ↓                                │
 │  ChatGroq LLM (Generator)               │
-│       ↓                                 │
+│        ↓                                │
 │  Grounded Response                      │
 └─────────────────────────────────────────┘
 ```
 
 ---
 
-## 🔐 Security
+## Task 6 — Advanced Memory Management
+
+```text
+┌─────────────────────────────────────────┐
+│              Task 6                     │
+│    Stateful Conversational Memory       │
+│                                         │
+│  User Request                           │
+│       ↓                                 │
+│  Agent Class (Context Preparation)      │
+│  [System + Summary + History]           │
+│       ↓                                 │
+│  LLM Engine Generation                  │
+│       ↓                                 │
+│  Append New History                     │
+│       ↓                                 │
+│  Execute Rolling Summary                │
+│       ↓                                 │
+│  Persist to JSON (Save State)           │
+└─────────────────────────────────────────┘
+```
+
+---
+
+# 🔐 Security
 
 API credentials and other secrets should always be stored in environment variables rather than hard-coded in source code.
 
-**Example:**
-```
+Example:
+
+```env
 GROQ_API_KEY=your_groq_api_key_here
 ```
 
-**Add the following to `.gitignore`:**
-```
+Add the following to `.gitignore`:
+
+```gitignore
 .env
 .venv/
 __pycache__/
@@ -627,11 +902,11 @@ __pycache__/
 *.zip
 ```
 
-> **Never commit actual API keys, tokens, passwords, or other credentials to GitHub.**
+Never commit actual API keys, tokens, passwords, or other credentials to GitHub.
 
 ---
 
-## 👨‍💻 Author
+# 👨‍💻 Author
 
 **Bavly Waleed**
 
@@ -639,17 +914,18 @@ AI Engineer | Machine Learning | Computer Vision | Agentic AI
 
 ---
 
-## ⭐ Project Purpose
+# ⭐ Project Purpose
 
 This repository demonstrates the practical application of modern AI engineering concepts, moving beyond simple LLM prompting toward:
 
-- Structured and validated LLM outputs
-- Stateful AI agents
-- Tool-using autonomous workflows
-- External API integration
-- Database-backed agents
-- Parameter-efficient fine-tuning
-- Domain-specific language models
-- Retrieval-Augmented Generation (RAG) for localized knowledge bases
+* Structured and validated LLM outputs
+* Stateful AI agents
+* Tool-using autonomous workflows
+* External API integration
+* Database-backed agents
+* Parameter-efficient fine-tuning
+* Domain-specific language models
+* Retrieval-Augmented Generation (RAG) for localized knowledge bases
+* Conversational memory and persistent session management
 
-The overall progression demonstrates how modern AI systems can evolve from simple LLM interactions into structured, autonomous, and specialized AI applications.
+The overall progression demonstrates how modern AI systems can evolve from simple LLM interactions into structured, autonomous, stateful, and specialized AI applications.
