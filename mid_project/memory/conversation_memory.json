@@ -1,0 +1,25 @@
+{
+  "recent_messages": [
+    {
+      "role": "user",
+      "content": "Add coco to my watchlist",
+      "timestamp": "2026-09-17T01:17:23.113105"
+    },
+    {
+      "role": "assistant",
+      "content": "Agent stopped due to iteration limit or time limit.",
+      "timestamp": "2026-09-17T01:17:25.345054"
+    },
+    {
+      "role": "user",
+      "content": "Recommend me some movies similar to Inception and Interstellar. and i watched coco and i liked it rate it 9 the movie was amazing and the twist at the end was mind blowing",
+      "timestamp": "2026-09-17T01:18:43.695017"
+    },
+    {
+      "role": "assistant",
+      "content": "Agent stopped due to iteration limit or time limit.",
+      "timestamp": "2026-09-17T01:19:13.837972"
+    }
+  ],
+  "total_messages": 22
+}

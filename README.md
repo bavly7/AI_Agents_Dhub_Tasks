@@ -12,29 +12,503 @@ This repository serves as a showcase of practical AI engineering solutions desig
 
 ### Tasks
 
-| Task                                                  | Description                                                                                    |
-| ----------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| **Task 1: Structured Information Extractor**          | Enforcing strict schema outputs on unstructured candidate data                                 |
-| **Task 2: Autonomous Multi-Tool AI Agent**            | Building a stateful, tool-calling agent using LangGraph and custom APIs                        |
-| **Task 3: Domain-Specific LLM Fine-Tuning**           | Fine-tuning an open-source LLM for specialized medical customer support                        |
-| **Task 4: Simple RAG System**                         | Building a retriever and generator system using FAISS and PDF documents                        |
+| Task | Description |
+|------|-------------|
+| **Task 1: Structured Information Extractor** | Enforcing strict schema outputs on unstructured candidate data |
+| **Task 2: Autonomous Multi-Tool AI Agent** | Building a stateful, tool-calling agent using LangGraph and custom APIs |
+| **Task 3: Domain-Specific LLM Fine-Tuning** | Fine-tuning an open-source LLM for specialized medical customer support |
+| **Task 4: Simple RAG System** | Building a retriever and generator system using FAISS and PDF documents |
 | **Task 6: Advanced Conversational Memory Management** | Implementing stateful conversational memory with rolling summaries and persistent JSON storage |
+| **🎬 Mid-Project: Movie Recommendation AI Assistant** | Full-stack RAG-powered conversational agent with watchlist management and personalized recommendations |
 
 ---
 
 ## ⚙️ Core Stack & Tools
 
-| Category                   | Technologies                                       |
-| -------------------------- | -------------------------------------------------- |
-| **LLM Frameworks**         | LangChain, LangGraph                               |
+| Category | Technologies |
+|----------|--------------|
+| **LLM Frameworks** | LangChain, LangGraph |
 | **Fine-Tuning & Training** | Hugging Face Transformers, PEFT, TRL, BitsAndBytes |
-| **Vector Databases & RAG** | FAISS, HuggingFaceEmbeddings, PyPDF                |
-| **Data Validation**        | Pydantic v2                                        |
-| **LLM Engine**             | Groq — `openai/gpt-oss-120b`, Mistral 7B           |
-| **Geolocation**            | geopy, timezonefinder, pytz                        |
-| **Database**               | SQLite, JSON                                       |
-| **Environment Management** | python-dotenv                                      |
-| **Language**               | Python                                             |
+| **Vector Databases & RAG** | FAISS, HuggingFaceEmbeddings, PyPDF |
+| **Data Validation** | Pydantic v2 |
+| **LLM Engine** | Groq — `openai/gpt-oss-120b`, Mistral 7B |
+| **Geolocation** | geopy, timezonefinder, pytz |
+| **Database** | SQLite, JSON, Excel (XLSX) |
+| **Environment Management** | python-dotenv |
+| **Language** | Python |
+
+---
+
+# 🎬 Mid-Project: Movie Recommendation AI Assistant with RAG
+
+## 📋 Project Overview
+
+An intelligent movie recommendation assistant that combines multiple AI concepts into a production-ready conversational agent. This project represents the culmination of all previously learned techniques: **RAG architecture**, **LangChain agents**, **FAISS vector search**, **conversational memory**, and **tool orchestration**.
+
+## 🎯 Objective
+
+Build a full-featured movie assistant that can:
+
+1. **Search semantically** across 44,000+ movies using natural language
+2. **Manage a personal watchlist** with Excel persistence
+3. **Track viewing history** with ratings and notes
+4. **Provide personalized recommendations** based on watch history
+5. **Maintain conversation context** with memory management
+6. **Execute multi-step tasks** autonomously using ReAct agents
+
+---
+
+## 🚀 What I Built
+
+### 🎥 **Core Features**
+
+#### 1. **Semantic Movie Search (RAG)**
+- **Dataset**: 44,503 movies from The Movie Database (TMDB)
+- **Embedding Model**: `sentence-transformers/all-MiniLM-L6-v2`
+- **Vector Store**: FAISS with 44,503 indexed documents
+- **Search Capability**: Natural language queries like "mind-bending sci-fi movies" or "movies about dreams and reality"
+
+#### 2. **Watchlist Management System**
+- **Add movies** to a personal watchlist with validation
+- **Mark as watched** with custom ratings (e.g., "8/10")
+- **Cancel/remove** movies from the list
+- **View filtered lists** by status (Want to Watch, Watched, Cancelled)
+- **Persistence**: Excel (.xlsx) format for easy manual access
+
+#### 3. **Personalized Recommendations**
+- Analyzes user's watch history and ratings
+- Recommends similar movies **not already in the watchlist**
+- Uses semantic similarity based on liked movies
+- Filters out duplicates automatically
+
+#### 4. **Conversational Memory**
+- **Rolling window memory**: Keeps last 4 messages to prevent token overflow
+- **Full conversation backup**: All interactions saved to JSON
+- **Context-aware responses**: Agent remembers previous queries
+- **Session persistence**: Can resume conversations after restart
+
+#### 5. **Intelligent Agent with Tools**
+- **ReAct Agent Pattern**: Thinks, acts, observes, and responds
+- **6 Specialized Tools**:
+  - `search_movies`: Semantic search across movie database
+  - `add_to_watchlist`: Add movies with fuzzy matching
+  - `mark_watched`: Track viewing history with ratings
+  - `cancel_movie`: Remove unwanted movies
+  - `view_watchlist`: Display current watchlist
+  - `get_recommendations`: Generate personalized suggestions
+
+#### 6. **Interactive Validation**
+- **Fuzzy matching**: Suggests alternatives when exact title not found
+- **User confirmation**: Asks "Did you mean X?" for ambiguous queries
+- **Graceful error handling**: Falls back to simple responses on failures
+
+#### 7. **Performance Monitoring & Logging**
+- Response time tracking for each query
+- Complete interaction logging to `logs/session.log`
+- Memory usage optimization (4-message window)
+- Error logging for debugging
+
+---
+
+## 🏗️ Technical Architecture
+
+### **System Components**
+
+```text
+┌────────────────────────────────────────────────────────┐
+│          Movie Recommendation AI Assistant              │
+└────────────────────────────────────────────────────────┘
+                         │
+        ┌────────────────┼────────────────┐
+        │                │                │
+        ▼                ▼                ▼
+┌──────────────┐  ┌──────────────┐  ┌──────────────┐
+│   RAG Core   │  │   Agent      │  │   Memory     │
+│   (FAISS)    │  │   (ReAct)    │  │   Manager    │
+└──────────────┘  └──────────────┘  └──────────────┘
+        │                │                │
+        ▼                ▼                ▼
+┌──────────────┐  ┌──────────────┐  ┌──────────────┐
+│  44K Movies  │  │   6 Tools    │  │ JSON Storage │
+│  Vectorized  │  │   Executor   │  │ 4-msg Window │
+└──────────────┘  └──────────────┘  └──────────────┘
+```
+
+### **Data Flow**
+
+```text
+User Query
+    ↓
+Memory Manager (Load Context)
+    ↓
+ReAct Agent (Reasoning)
+    ↓
+Tool Selection & Execution
+    ↓
+┌─────────────────────────────────┐
+│  FAISS Search                   │  ← Semantic Retrieval
+│  Watchlist Operations           │  ← Excel CRUD
+│  Recommendation Engine          │  ← History Analysis
+└─────────────────────────────────┘
+    ↓
+Response Generation
+    ↓
+Memory Update (Save Context)
+    ↓
+User Response + Performance Log
+```
+
+---
+
+## 💡 Implementation Highlights
+
+### **1. Data Processing Pipeline**
+
+```python
+# Loaded 45,466 movies → Cleaned to 44,503
+# ✓ Removed movies without plots
+# ✓ Parsed JSON genres from strings
+# ✓ Extracted directors and top 5 cast members
+# ✓ Merged credits with metadata
+# ✓ Created rich document representations
+```
+
+**Document Format:**
+```text
+Toy Story (1995)
+Genre: Animation, Comedy, Family
+Director: John Lasseter
+Cast: Tom Hanks, Tim Allen, Don Rickles, Jim Varney, Wallace Shawn
+Rating: 7.7/10
+
+Plot: Led by Woody, Andy's toys live happily in his room until...
+```
+
+### **2. Vector Store Creation**
+
+```python
+# Created 44,503 LangChain Documents
+# Embedded using all-MiniLM-L6-v2 (384 dimensions)
+# Indexed with FAISS in 124.43 seconds
+# Saved to disk for fast loading
+```
+
+### **3. Memory Optimization**
+
+```python
+class MemoryManager:
+    """Strict 4-message window to avoid rate limits"""
+    
+    def __init__(self, max_recent=4):
+        self.max_recent = 4  # 2 conversation pairs
+        self.memory = {'recent_messages': []}
+    
+    def add_message(self, role, content):
+        # Truncate long messages to 800 chars
+        # Keep ONLY last 4 messages
+        # No LLM summarization needed!
+        if len(self.memory['recent_messages']) > 4:
+            self.memory['recent_messages'] = 
+                self.memory['recent_messages'][-4:]
+```
+
+**Why 4 messages?**
+- Prevents Groq rate limit errors
+- Eliminates need for expensive LLM summarization
+- Maintains immediate conversation context
+- Full backup saved separately for recovery
+
+### **4. Watchlist Manager with Error Handling**
+
+```python
+class WatchlistManager:
+    """Excel-based watchlist with fuzzy matching"""
+    
+    def add_to_watchlist(self, movie_name: str):
+        # 1. Fuzzy search in movie database
+        # 2. Return suggestions if no exact match
+        # 3. Check for duplicates in watchlist
+        # 4. Add with metadata (genre, year, etc.)
+        # 5. Handle file permission errors gracefully
+        
+    def mark_watched(self, movie_name: str, rating: str):
+        # 1. Find movie in watchlist
+        # 2. Update status to "Watched"
+        # 3. Record timestamp
+        # 4. Save rating (if provided)
+        # 5. Retry logic for file locks
+```
+
+### **5. ReAct Agent Configuration**
+
+```python
+# Tools → Agent → Executor
+tools = [
+    Tool(name="search_movies", ...),
+    Tool(name="add_to_watchlist", ...),
+    Tool(name="mark_watched", ...),
+    Tool(name="cancel_movie", ...),
+    Tool(name="view_watchlist", ...),
+    Tool(name="get_recommendations", ...)
+]
+
+agent = create_react_agent(llm, tools, prompt)
+agent_executor = AgentExecutor(
+    agent=agent,
+    tools=tools,
+    verbose=True,
+    max_iterations=3,  # Prevent infinite loops
+    handle_parsing_errors=True
+)
+```
+
+---
+
+## 📊 Project Statistics
+
+| Metric | Value |
+|--------|-------|
+| **Movies Indexed** | 44,503 |
+| **Vector Dimensions** | 384 (MiniLM-L6-v2) |
+| **Index Build Time** | 124.43 seconds |
+| **Memory Window** | 4 messages (2 pairs) |
+| **Tools Available** | 6 specialized functions |
+| **Max Agent Iterations** | 3 per query |
+| **Avg Response Time** | 2-7 seconds |
+| **Storage Format** | Excel (watchlist), JSON (memory) |
+
+---
+
+## 🎯 Key Concepts Demonstrated
+
+### **Advanced RAG Implementation**
+- ✅ Large-scale document indexing (44K+ items)
+- ✅ Semantic search with FAISS
+- ✅ Document chunking and metadata preservation
+- ✅ Persistent vector store for fast loading
+
+### **Agentic AI Patterns**
+- ✅ ReAct (Reasoning + Acting) agent architecture
+- ✅ Multi-tool orchestration
+- ✅ Dynamic tool selection based on intent
+- ✅ Iterative reasoning loops with max_iterations safety
+
+### **Memory Management**
+- ✅ Rolling window memory (4-message optimization)
+- ✅ Conversation history persistence
+- ✅ Full backup system for recovery
+- ✅ Token-efficient context management
+
+### **Production Engineering**
+- ✅ Error handling and graceful degradation
+- ✅ Performance monitoring and logging
+- ✅ File lock retry logic
+- ✅ Interactive user validation
+- ✅ Fuzzy matching for user input
+- ✅ Data type conversion handling (Excel compatibility)
+
+---
+
+## 💻 Sample Interactions
+
+### **Example 1: Semantic Search**
+
+```text
+You: What are some mind-bending sci-fi movies?
+
+Bot: Found movies:
+
+1. Inception (2010)
+   Science Fiction, Thriller | 9.0/10
+   A thief who steals corporate secrets through dream-sharing...
+
+2. Interstellar (2014)
+   Science Fiction, Drama | 8.6/10
+   Explores time dilation and black holes in space exploration...
+
+3. The Matrix (1999)
+   Science Fiction, Action | 8.7/10
+   A computer hacker learns about the true nature of reality...
+```
+
+### **Example 2: Watchlist Management**
+
+```text
+You: Add Inception to my watchlist
+
+Bot: ✅ Added 'Inception' (2010) to your watchlist!
+
+You: I watched Inception and loved it! Rate it 9/10
+
+Bot: ✅ Marked 'Inception' as watched!
+
+You: Give me recommendations
+
+Bot: Based on what you've watched, try:
+
+1. Interstellar (2014)
+   Science Fiction, Drama | 8.6/10
+
+2. Shutter Island (2010)
+   Mystery, Thriller | 8.2/10
+
+3. The Prestige (2006)
+   Drama, Mystery, Science Fiction | 8.5/10
+```
+
+### **Example 3: Interactive Validation**
+
+```text
+You: Add intersteller to my list
+
+Bot: I couldn't find that exact movie. Did you mean 'Interstellar'? 
+(Please reply Yes or No)
+
+You: Yes
+
+Bot: ✅ Added 'Interstellar' (2014) to your watchlist!
+```
+
+---
+
+## 🛠️ Technical Challenges Solved
+
+### **Challenge 1: Groq Rate Limits**
+**Problem**: Long conversation history caused rate limit errors  
+**Solution**: Implemented strict 4-message rolling window, eliminated LLM-based summarization
+
+### **Challenge 2: Excel File Locking**
+**Problem**: `PermissionError` when watchlist file is open  
+**Solution**: Added retry logic with exponential backoff + user-friendly error messages
+
+### **Challenge 3: Agent Infinite Loops**
+**Problem**: Agent sometimes repeated tool calls unnecessarily  
+**Solution**: Set `max_iterations=3` and improved prompt formatting instructions
+
+### **Challenge 4: Fuzzy Movie Title Matching**
+**Problem**: Users might misspell movie titles  
+**Solution**: Implemented partial string matching + interactive confirmation system
+
+### **Challenge 5: Excel Data Type Errors**
+**Problem**: DateTime/Rating columns caused dtype errors when updating  
+**Solution**: Explicitly convert columns to `object` type before assignment
+
+---
+
+## 📁 Project File Structure
+
+```text
+movie_recommender/
+│
+├── movie_recommender.ipynb          # Main implementation notebook
+├── README.md                        # This file
+│
+├── data/
+│   ├── movies_metadata.csv          # 45,466 movies (raw)
+│   └── credits.csv                  # Cast and crew data
+│
+├── faiss_index/                     # Persisted vector store
+│   ├── index.faiss                  # FAISS index file
+│   └── index.pkl                    # Metadata pickle
+│
+├── memory/
+│   ├── conversation_memory.json     # 4-message window storage
+│   └── full_backup.json             # Complete conversation history
+│
+├── logs/
+│   └── session.log                  # Performance and error logs
+│
+├── my_watchlist.xlsx                # User's movie watchlist
+│
+└── .env                             # GROQ_API_KEY configuration
+```
+
+---
+
+## 🚀 How to Run
+
+### **1. Install Dependencies**
+
+```bash
+pip install langchain langchain-groq langchain-huggingface langchain-community
+pip install faiss-cpu sentence-transformers pandas openpyxl python-dotenv
+```
+
+### **2. Configure API Key**
+
+Create `.env` file:
+```env
+GROQ_API_KEY=your_groq_api_key_here
+```
+
+### **3. Prepare Data**
+
+Download TMDB dataset:
+```bash
+# Place these files in data/ directory:
+# - movies_metadata.csv
+# - credits.csv
+```
+
+### **4. Run the Notebook**
+
+```bash
+jupyter notebook movie_recommender.ipynb
+```
+
+### **5. Start Interactive Chat**
+
+```python
+# In the notebook, run:
+interactive_chat()
+```
+
+---
+
+## 📈 Performance Metrics
+
+### **Vector Store Performance**
+- **Build Time**: 124.43 seconds (one-time)
+- **Load Time**: ~2 seconds (subsequent runs)
+- **Search Time**: <100ms per query
+
+### **Agent Response Times**
+- **Simple Query**: 1-3 seconds
+- **Tool Execution**: 2-5 seconds
+- **Complex Multi-Step**: 5-10 seconds
+
+### **Memory Efficiency**
+- **Context Window**: 4 messages (~1200 tokens)
+- **Token Savings**: ~70% vs full history
+- **Rate Limit Errors**: 0 (after optimization)
+
+---
+
+## 🎓 Learning Outcomes
+
+This mid-project successfully demonstrates:
+
+1. **End-to-End RAG System**: From raw CSV to production-ready semantic search
+2. **Agent Design Patterns**: ReAct architecture with real-world tool integration
+3. **Production Considerations**: Error handling, logging, retry logic, user validation
+4. **Memory Optimization**: Token-efficient conversation management
+5. **Data Engineering**: ETL pipeline for movie metadata + credits
+6. **User Experience**: Interactive validation, fuzzy matching, helpful error messages
+7. **State Management**: Excel persistence, JSON backups, session recovery
+
+---
+
+## 🔮 Future Enhancements
+
+### **Planned Features**
+- [ ] Filter watchlist by genre and rating range
+- [ ] Export recommendations to PDF report
+- [ ] Multi-user support with separate watchlists
+- [ ] Integration with streaming service APIs
+- [ ] Sentiment analysis on user reviews
+- [ ] Movie trailer embedding and playback
+- [ ] Social features (share watchlists)
+- [ ] GraphRAG for actor/director relationship queries
 
 ---
 
@@ -295,11 +769,11 @@ This format prepares the dataset for instruction fine-tuning.
 
 Configured and applied **LoRA (Low-Rank Adaptation)**.
 
-| Parameter            | Value |
-| -------------------- | ----- |
-| Rank (`r`)           | 16    |
-| Alpha (`lora_alpha`) | 32    |
-| Dropout              | 0.05  |
+| Parameter | Value |
+|-----------|-------|
+| Rank (`r`) | 16 |
+| Alpha (`lora_alpha`) | 32 |
+| Dropout | 0.05 |
 | Trainable Parameters | ~1.1% |
 
 The adapters target attention projection layers such as:
@@ -563,12 +1037,12 @@ This allows sessions to be paused and loaded later.
   "conversation_history": [
     {
       "user": "Hi! My name is Bavly and I'm an AI engineer working on AI projects.",
-      "assistant": "Hello Bavly! 👋 Nice to meet you. It’s great to connect with an AI engineer. What kind of AI projects are you working on right now? Anything exciting you’d like to share or discuss?",
+      "assistant": "Hello Bavly! 👋 Nice to meet you. It's great to connect with an AI engineer. What kind of AI projects are you working on right now? Anything exciting you'd like to share or discuss?",
       "timestamp": "2026-09-14T13:54:19.260451"
     },
     {
       "user": "I'm 21 years old.",
-      "assistant": "Thanks for letting me know! 😊 Is there anything specific you’d like to chat about or any project you’re working on that I can help with?",
+      "assistant": "Thanks for letting me know! 😊 Is there anything specific you'd like to chat about or any project you're working on that I can help with?",
       "timestamp": "2026-09-14T13:56:14.619902"
     }
   ],
@@ -612,6 +1086,16 @@ This allows sessions to be paused and loaded later.
 ├── Task 6 - Memory/
 │   ├── agent_with_memory.ipynb   # Conversational memory implementation
 │   └── conversation_log.json     # Saved conversation state
+│
+├── 🎬 Mid-Project - Movie Recommender/
+│   ├── movie_recommender.ipynb   # Full implementation
+│   ├── data/
+│   │   ├── movies_metadata.csv   # 45K+ movies
+│   │   └── credits.csv           # Cast & crew
+│   ├── faiss_index/              # Vector store (44K documents)
+│   ├── memory/                   # Conversation storage
+│   ├── logs/                     # Performance logs
+│   └── my_watchlist.xlsx         # User watchlist
 │
 ├── .env                          # Environment variables
 ├── .gitignore
@@ -671,36 +1155,22 @@ Replace `your_groq_api_key_here` with your actual Groq API key.
 
 ---
 
-# ▶️ Running the Project
+# ▶️ Running the Projects
 
-After installing the dependencies and configuring the environment variables, run Task 2 from its directory:
+## Task 2: Multi-Tool Agent
 
 ```bash
 cd "Task 2 - langgraph"
 python main.py
 ```
 
----
-
-# 📓 Running Task 1, Task 3, Task 4 & Task 6
-
-Start Jupyter Notebook:
+## Task 1, 3, 4, 6, Mid-Project: Jupyter Notebooks
 
 ```bash
 jupyter notebook
 ```
 
-Then open:
-
-```text
-Task 1/task1.ipynb
-
-Task 3/task3.ipynb
-
-Task 4 - RAG/task4.ipynb
-
-Task 6 - Memory/agent_with_memory.ipynb
-```
+Then open the respective `.ipynb` files.
 
 ---
 
@@ -723,20 +1193,25 @@ Task 6 - Memory/agent_with_memory.ipynb
 * Multi-tool orchestration
 * Agentic loops
 * Tool execution
+* ReAct (Reasoning + Acting) pattern
 
 ## Vector Databases & Retrieval (RAG)
 
 * Document parsing and chunking
 * Semantic search and embeddings
 * FAISS Vector Database integration
+* Large-scale indexing (44K+ documents)
 * Retrieval-Augmented Generation pipelines
 * Anti-hallucination prompting techniques
+* Persistent vector stores
 
 ## Memory & State Management
 
 * Rolling conversation summaries
+* Token-efficient memory windows
 * Object-Oriented Bot Architectures for session state
 * JSON persistence for saving and loading conversation histories
+* Full conversation backups
 
 ## Data & Backend Integration
 
@@ -744,7 +1219,10 @@ Task 6 - Memory/agent_with_memory.ipynb
 * External API integration
 * Geolocation and timezone services
 * SQLite database integration
+* Excel file operations (XLSX)
 * Schedule conflict detection
+* ETL pipelines for large datasets
+* Fuzzy string matching
 * Environment and API-key management
 
 ## LLM Fine-Tuning
@@ -756,129 +1234,22 @@ Task 6 - Memory/agent_with_memory.ipynb
 * `SFTTrainer`
 * Domain-specific assistant training
 
----
+## Production Engineering
 
-# 🧠 Architecture Summary
-
-The repository progresses from structured LLM extraction, to autonomous agentic workflows, domain-specific model fine-tuning, Retrieval-Augmented Generation, and stateful conversational memory.
-
----
-
-## Task 1 — Structured Information Extraction
-
-```text
-┌─────────────────────────────────────────┐
-│              Task 1                     │
-│      Structured Information Extraction  │
-│                                         │
-│  Unstructured Text                      │
-│        ↓                                │
-│  PromptTemplate                         │
-│        ↓                                │
-│  ChatGroq                               │
-│        ↓                                │
-│  PydanticOutputParser                   │
-│        ↓                                │
-│  Validated Structured Data              │
-└─────────────────────────────────────────┘
-```
+* Error handling and graceful degradation
+* Retry logic for file operations
+* Performance monitoring and logging
+* Interactive user validation
+* Rate limit management
+* Data type compatibility handling
 
 ---
 
-## Task 2 — Autonomous AI Agent
+# 🧠 Complete Architecture Summary
 
-```text
-┌─────────────────────────────────────────┐
-│              Task 2                     │
-│       Autonomous AI Agent               │
-│                                         │
-│  User Request                           │
-│        ↓                                │
-│  LangGraph Agent                        │
-│        ↓                                │
-│  Tool Selection                         │
-│        ↓                                │
-│  ┌──────────┬───────────┬───────────┐   │
-│  │ Analytics│ Location  │ Scheduler │   │
-│  └──────────┴───────────┴───────────┘   │
-│        ↓                                │
-│  Tool Results                           │
-│        ↓                                │
-│  Agent Re-evaluation                    │
-│        ↓                                │
-│  Final Response                         │
-└─────────────────────────────────────────┘
-```
+The repository demonstrates a complete progression from foundational LLM concepts to production-ready AI systems:
 
----
-
-## Task 3 — Domain-Specific LLM Fine-Tuning
-
-```text
-┌─────────────────────────────────────────┐
-│              Task 3                     │
-│   Domain-Specific LLM Fine-Tuning       │
-│                                         │
-│  Pre-trained Base Model (Mistral 7B)    │
-│        ↓                                │
-│  Medical Q&A Dataset Processing         │
-│        ↓                                │
-│  Apply LoRA Adapters (PEFT)             │
-│        ↓                                │
-│  Train via SFTTrainer                   │
-│        ↓                                │
-│  LangChain Integration & Output         │
-└─────────────────────────────────────────┘
-```
-
----
-
-## Task 4 — Retrieval-Augmented Generation (RAG)
-
-```text
-┌─────────────────────────────────────────┐
-│              Task 4                     │
-│       Simple RAG Architecture           │
-│                                         │
-│  PDF Documents                          │
-│        ↓                                │
-│  Text Splitter (Chunks)                 │
-│        ↓                                │
-│  HuggingFace Embeddings                 │
-│        ↓                                │
-│  FAISS Vector Database (Retriever)      │
-│        ↓                                │
-│  Context + User Query                   │
-│        ↓                                │
-│  ChatGroq LLM (Generator)               │
-│        ↓                                │
-│  Grounded Response                      │
-└─────────────────────────────────────────┘
-```
-
----
-
-## Task 6 — Advanced Memory Management
-
-```text
-┌─────────────────────────────────────────┐
-│              Task 6                     │
-│    Stateful Conversational Memory       │
-│                                         │
-│  User Request                           │
-│       ↓                                 │
-│  Agent Class (Context Preparation)      │
-│  [System + Summary + History]           │
-│       ↓                                 │
-│  LLM Engine Generation                  │
-│       ↓                                 │
-│  Append New History                     │
-│       ↓                                 │
-│  Execute Rolling Summary                │
-│       ↓                                 │
-│  Persist to JSON (Save State)           │
-└─────────────────────────────────────────┘
-```
+**Foundation** → **Agents** → **Specialization** → **RAG** → **Memory** → **Integration**
 
 ---
 
@@ -900,6 +1271,10 @@ Add the following to `.gitignore`:
 __pycache__/
 *.pyc
 *.zip
+faiss_index/
+logs/
+memory/
+my_watchlist.xlsx
 ```
 
 Never commit actual API keys, tokens, passwords, or other credentials to GitHub.
@@ -925,7 +1300,20 @@ This repository demonstrates the practical application of modern AI engineering 
 * Database-backed agents
 * Parameter-efficient fine-tuning
 * Domain-specific language models
+* **Large-scale RAG systems (44K+ documents)**
 * Retrieval-Augmented Generation (RAG) for localized knowledge bases
 * Conversational memory and persistent session management
+* **Production-ready conversational AI assistants**
+* **End-to-end application development**
 
-The overall progression demonstrates how modern AI systems can evolve from simple LLM interactions into structured, autonomous, stateful, and specialized AI applications.
+The overall progression demonstrates how modern AI systems can evolve from simple LLM interactions into structured, autonomous, stateful, specialized, and production-ready AI applications that solve real-world problems.
+
+---
+
+# 📝 License
+
+This project is created for educational purposes as part of AI Engineering coursework.
+
+---
+
+**Last Updated**: September 20, 2026

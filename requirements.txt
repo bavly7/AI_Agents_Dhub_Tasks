@@ -15,3 +15,8 @@ pypdf
 faiss-cpu 
 python-dotenv 
 sentence-transformers
+pandas
+openpyxl
+torch
+torchvision
+torchaudio --index-url https://download.pytorch.org/whl/cu121
