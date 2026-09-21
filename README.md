@@ -2,7 +2,7 @@
 
 Welcome to the **AI Engineering Practice & Frameworks** repository!
 
-This project showcases hands-on implementations of modern LLM architectures, structured data extraction, autonomous multi-tool AI agents, domain-specific LLM fine-tuning, Retrieval-Augmented Generation (RAG), and conversational memory management using **LangChain, LangGraph, Pydantic, Hugging Face, FAISS, PEFT, and Groq**.
+This project showcases hands-on implementations of modern LLM architectures, structured data extraction, autonomous multi-tool AI agents, domain-specific LLM fine-tuning, Retrieval-Augmented Generation (RAG), conversational memory management, and **multi-agent collaboration systems** using **LangChain, LangGraph, Pydantic, Hugging Face, FAISS, PEFT, and Groq**.
 
 ---
 
@@ -20,6 +20,7 @@ This repository serves as a showcase of practical AI engineering solutions desig
 | **Task 4: Simple RAG System** | Building a retriever and generator system using FAISS and PDF documents |
 | **Task 6: Advanced Conversational Memory Management** | Implementing stateful conversational memory with rolling summaries and persistent JSON storage |
 | **🎬 Mid-Project: Movie Recommendation AI Assistant** | Full-stack RAG-powered conversational agent with watchlist management and personalized recommendations |
+| **Task 7: Multi-Agent Travel Planning System** | Sequential multi-agent collaboration with conversational intake and specialized planning agents |
 
 ---
 
@@ -1052,6 +1053,486 @@ This allows sessions to be paused and loaded later.
 
 ---
 
+# ✈️ Task 7: Multi-Agent Travel Planning System
+
+## 📋 Objective
+
+Build an intelligent, two-phase travel planning system that combines **conversational AI** with **multi-agent collaboration** to collect user requirements and generate personalized travel plans.
+
+The system demonstrates:
+- Interactive requirement gathering with memory
+- Sequential multi-agent pipeline architecture
+- Structured data flow between specialized agents
+- Production-ready error handling
+
+## 🎯 What I Built
+
+### **Two-Phase Architecture**
+
+#### **Phase 1: Interactive Intake Agent**
+A conversational agent that collects travel requirements through natural dialogue:
+- **Memory**: `ConversationBufferWindowMemory` (k=4) for context retention
+- **Validation**: Ensures all 4 required fields are collected
+- **Output**: Validated JSON with destination, budget, interests, and time
+
+#### **Phase 2: Sequential Multi-Agent Pipeline**
+Four specialized agents working in sequence:
+
+1. **Destination Agent**: Analyzes user preferences and recommends specific places and activities
+2. **Budget Agent**: Creates detailed cost breakdown across all expense categories
+3. **Itinerary Agent**: Generates day-by-day schedule with timing and locations
+4. **Recommendation Agent**: Synthesizes all information into a beautiful markdown travel report
+
+---
+
+## 🏗️ System Architecture
+
+### **Data Flow Diagram**
+
+```text
+┌─────────────────────────────────────────────────────────┐
+│             PHASE 1: INTAKE AGENT                       │
+│                                                          │
+│   User Input → Memory (k=4) → LLM → JSON Validation    │
+│                                           ↓              │
+│                          Requirements JSON               │
+└─────────────────────────────────────────────────────────┘
+                            ↓
+┌─────────────────────────────────────────────────────────┐
+│          PHASE 2: MULTI-AGENT PIPELINE                  │
+│                                                          │
+│  Requirements JSON                                       │
+│         ↓                                                │
+│  Agent 1 (Destination) → Places & Activities JSON       │
+│         ↓                                                │
+│  Agent 2 (Budget) → Cost Breakdown JSON                 │
+│         ↓                                                │
+│  Agent 3 (Itinerary) → Day-by-Day Schedule JSON        │
+│         ↓                                                │
+│  Agent 4 (Recommendation) → Markdown Report             │
+└─────────────────────────────────────────────────────────┘
+```
+
+### **Agent Communication Pattern**
+
+```text
+Intake Agent (Conversational)
+    ↓ [JSON: destination, budget, interests, time]
+    
+Destination Agent (Analytical)
+    ↓ [JSON: places[], activities[], highlights]
+    
+Budget Agent (Financial)
+    ↓ [JSON: accommodation, food, transport, total, status]
+    
+Itinerary Agent (Planning)
+    ↓ [JSON: daily_schedule[], duration]
+    
+Recommendation Agent (Synthesis)
+    ↓ [Markdown: Complete travel guide]
+```
+
+---
+
+## 💡 Implementation Highlights
+
+### **1. Conversational Intake with Memory**
+
+```python
+class ConversationBufferWindowMemory:
+    """Keeps last 4 messages for context"""
+    k = 4  # 2 conversation pairs
+```
+
+**Features:**
+- Natural dialogue flow
+- Friendly, enthusiastic tone
+- Tracks collected vs. missing information
+- Outputs JSON only when all 4 fields present
+
+**Sample Interaction:**
+```text
+🤖: Where would you like to go?
+👤: Egypt
+🤖: Great choice! What's your budget?
+👤: $2000 for two people
+🤖: Perfect! What are your interests?
+👤: Beaches
+🤖: Lastly, how many days do you have?
+👤: 5 days
+
+✅ {
+  "destination": "Egypt",
+  "budget": "$2000 for two persons",
+  "interests": "beaches",
+  "time": "5 days"
+}
+```
+
+### **2. JsonOutputParser for Groq Compatibility**
+
+**Challenge:** Groq's `openai/gpt-oss-120b` model doesn't support `with_structured_output()` (requires tool calling)
+
+**Solution:** Replaced Pydantic-based parsing with `JsonOutputParser`
+
+```python
+# ❌ Doesn't work with Groq
+structured_llm = llm.with_structured_output(Model)
+
+# ✅ Works universally
+json_parser = JsonOutputParser()
+chain = prompt | llm | json_parser
+```
+
+### **3. Type-Safe Data Conversion**
+
+**Problem:** LLMs sometimes return lists of dicts instead of strings
+
+```json
+❌ ["{"name": "Pyramid"}", "{"name": "Museum"}"]
+✅ ["Pyramid", "Museum"]
+```
+
+**Solution:** Helper function handles both formats
+
+```python
+def convert_to_string_list(data):
+    """Extracts strings from dicts or returns as-is"""
+    result = []
+    for item in data:
+        if isinstance(item, dict):
+            # Extract from 'name', 'place', 'activity', etc.
+            result.append(extract_relevant_value(item))
+        else:
+            result.append(str(item))
+    return result
+```
+
+### **4. Structured Prompts with Format Instructions**
+
+Each agent receives explicit JSON schema examples:
+
+```python
+prompt = f"""
+Return ONLY valid JSON in this format:
+{{
+  "places": ["Place 1", "Place 2"],
+  "activities": ["Activity 1", "Activity 2"],
+  "highlights": "Text here"
+}}
+"""
+```
+
+### **5. Safe Dictionary Access**
+
+**Before (causes AttributeError):**
+```python
+places = destination_output.places  # Fails - dict, not object
+```
+
+**After (production-safe):**
+```python
+places = destination_output.get('places', [])  # Returns [] if missing
+```
+
+---
+
+## 🛠️ Technical Challenges & Solutions
+
+### **Challenge 1: Tool Calling Incompatibility**
+
+**Error:**
+```python
+BadRequestError: Tool choice is required, but model did not call a tool
+```
+
+**Root Cause:**  
+`with_structured_output()` uses function calling internally, which Groq doesn't support
+
+**Solution:**  
+Switched to `JsonOutputParser` which works with any JSON-capable LLM
+
+**Impact:** ✅ Universal compatibility across LLM providers
+
+---
+
+### **Challenge 2: Mixed Data Types from LLM**
+
+**Error:**
+```python
+TypeError: sequence item 0: expected str instance, dict found
+```
+
+**Root Cause:**  
+LLM returned `[{"place": "Cairo"}, {"place": "Alexandria"}]` instead of `["Cairo", "Alexandria"]`
+
+**Solution:**  
+Created `convert_to_string_list()` helper function
+
+**Impact:** ✅ Robust handling of variable LLM outputs
+
+---
+
+### **Challenge 3: Dictionary vs Object Access**
+
+**Error:**
+```python
+AttributeError: 'dict' object has no attribute 'places'
+```
+
+**Root Cause:**  
+`JsonOutputParser` returns Python dicts, not Pydantic objects
+
+**Solution:**  
+Replaced all `.attribute` access with `.get('key', default)`
+
+**Impact:** ✅ No crashes from missing keys, graceful degradation
+
+---
+
+## 📊 System Specifications
+
+| Component | Technology |
+|-----------|------------|
+| **LLM Provider** | Groq |
+| **Model** | `openai/gpt-oss-120b` |
+| **Framework** | LangChain (LCEL) |
+| **Memory** | ConversationBufferWindowMemory (k=4) |
+| **Output Parsing** | JsonOutputParser |
+| **Agent Pattern** | Sequential Pipeline (not LangGraph) |
+| **Data Flow** | JSON → JSON → JSON → Markdown |
+| **Error Handling** | `.get()` methods, type conversion |
+
+---
+
+## 💻 Sample Output
+
+### **Phase 1: Requirements Collection**
+
+```json
+{
+  "destination": "Egypt",
+  "budget": "$2000 USD for two persons",
+  "interests": "beaches",
+  "time": "5 days"
+}
+```
+
+### **Phase 2: Agent Pipeline**
+
+**Agent 1 Output (Destination):**
+```json
+{
+  "places": [
+    "Hurghada Beach",
+    "Sharm El Sheikh",
+    "Marsa Alam",
+    "Alexandria Corniche",
+    "Ras Mohammed National Park",
+    "Giftun Island"
+  ],
+  "activities": [
+    "Snorkeling in Red Sea",
+    "Beach relaxation",
+    "Diving excursions",
+    "Boat tours",
+    "Water sports",
+    "Sunset viewing"
+  ],
+  "highlights": "Egypt's Red Sea coast offers pristine beaches..."
+}
+```
+
+**Agent 2 Output (Budget):**
+```json
+{
+  "accommodation": "$60 per night, $300 total",
+  "food": "$30 per day, $150 total",
+  "transport": "$200 (flights + local)",
+  "activities": "$100 (snorkeling, tours)",
+  "miscellaneous": "$50 (tips, souvenirs)",
+  "total": "$800",
+  "budget_status": "Well within budget - $1200 remaining"
+}
+```
+
+**Agent 3 Output (Itinerary):**
+```json
+{
+  "daily_schedule": [
+    "Day 1: Arrive Hurghada, check-in, evening beach walk",
+    "Day 2: Morning snorkeling, afternoon at Giftun Island",
+    "Day 3: Day trip to Ras Mohammed National Park",
+    "Day 4: Beach relaxation, water sports, sunset cruise",
+    "Day 5: Morning dive, afternoon departure"
+  ],
+  "duration": "5 days"
+}
+```
+
+**Agent 4 Output (Final Report):**
+```markdown
+# 🌊 Your Egypt Beach Paradise - 5-Day Escape
+
+## ✨ Destination Overview
+
+Egypt's Red Sea coast offers world-class beaches, vibrant coral reefs, 
+and year-round sunshine. Perfect for beach lovers seeking relaxation 
+and underwater adventures.
+
+## 📅 Your Day-by-Day Itinerary
+
+### Day 1: Arrival & Beach Welcome
+- **Morning**: Arrive in Hurghada
+- **Afternoon**: Hotel check-in, settle in
+- **Evening**: Sunset beach walk along the corniche
+
+### Day 2: Underwater Wonderland
+- **Morning**: Snorkeling trip (Red Sea coral reefs)
+- **Afternoon**: Boat excursion to Giftun Island
+- **Evening**: Fresh seafood dinner by the beach
+
+[... complete 5-day schedule ...]
+
+## 💰 Budget Breakdown
+
+| Category | Cost |
+|----------|------|
+| Accommodation | $300 |
+| Food | $150 |
+| Transport | $200 |
+| Activities | $100 |
+| Miscellaneous | $50 |
+| **Total** | **$800** |
+
+✅ **Budget Status**: Well within your $2000 budget! 
+You have $1200 remaining for upgrades or extensions.
+
+## 🎒 What to Pack
+
+- Sunscreen (SPF 50+)
+- Swimwear and beach towel
+- Snorkeling gear (or rent locally)
+- Light, breathable clothing
+- Hat and sunglasses
+- Underwater camera
+
+## 💡 Travel Tips
+
+1. **Best Time**: October-April for cooler weather
+2. **Currency**: Egyptian Pound (cash recommended)
+3. **Snorkeling**: Book through hotel for best rates
+4. **Safety**: Red Sea is generally safe for swimming
+
+## 🌟 Final Thoughts
+
+Your Egyptian beach getaway combines relaxation with adventure. 
+The Red Sea's crystal-clear waters and vibrant marine life will 
+create memories to last a lifetime. Safe travels! 🏖️✨
+```
+
+---
+
+## 🎓 Key Concepts Demonstrated
+
+### **Multi-Agent Collaboration**
+- ✅ Sequential agent pipeline (not parallel)
+- ✅ Structured data passing between agents
+- ✅ Specialized agent roles (analysis, budgeting, planning, synthesis)
+- ✅ Clean separation of concerns
+
+### **Conversational AI**
+- ✅ Stateful conversation with memory
+- ✅ Context retention (k=4 window)
+- ✅ Natural language to JSON extraction
+- ✅ Interactive requirement gathering
+
+### **Production Engineering**
+- ✅ Error-tolerant dictionary access
+- ✅ Type conversion for mixed LLM outputs
+- ✅ API compatibility handling (Groq-specific)
+- ✅ Graceful degradation (missing keys return defaults)
+
+### **LangChain Patterns**
+- ✅ LCEL chain composition
+- ✅ JsonOutputParser for universal compatibility
+- ✅ PromptTemplate with format instructions
+- ✅ Memory integration
+
+---
+
+## 📁 Project Structure
+
+```text
+Task 7/
+│
+├── multi_agent_travel_planner_final.ipynb    # Complete implementation
+│
+├── README.md                                  # This documentation
+│
+└── .env                                       # GROQ_API_KEY
+```
+
+---
+
+## 🚀 How to Run
+
+### **1. Install Dependencies**
+
+```bash
+pip install langchain langchain-groq langchain-core python-dotenv
+```
+
+### **2. Configure API Key**
+
+Create `.env`:
+```env
+GROQ_API_KEY=your_groq_api_key_here
+```
+
+### **3. Run the Notebook**
+
+```bash
+jupyter notebook multi_agent_travel_planner_final.ipynb
+```
+
+### **4. Execute Cells Sequentially**
+
+Run all cells from top to bottom. The final cell starts the interactive chat:
+
+```python
+if __name__ == "__main__":
+    result = main()
+```
+
+---
+
+## 🎯 Learning Outcomes
+
+This task successfully demonstrates:
+
+1. **Two-Phase System Design**: Separating intake from processing
+2. **Sequential Agent Orchestration**: Passing structured data between agents
+3. **API Compatibility Handling**: Groq-specific workarounds
+4. **Production Error Handling**: Type safety, missing key handling
+5. **Conversational Memory**: Context retention without token bloat
+6. **Structured Output Parsing**: JSON schemas with format instructions
+7. **End-to-End Pipeline**: From natural language to formatted report
+
+---
+
+## 🔮 Potential Enhancements
+
+- [ ] Add parallel agent execution for speed (using asyncio)
+- [ ] Integrate external APIs (flights, hotels, weather)
+- [ ] Add user feedback loop (refine recommendations)
+- [ ] Implement conversation history persistence
+- [ ] Add image generation for destinations
+- [ ] Export reports to PDF format
+- [ ] Multi-language support for international travelers
+
+---
+
 # 🗂️ Project Structure
 
 ```text
@@ -1097,6 +1578,10 @@ This allows sessions to be paused and loaded later.
 │   ├── logs/                     # Performance logs
 │   └── my_watchlist.xlsx         # User watchlist
 │
+├── Task 7 - Multi-Agent Travel Planner/
+│   ├── multi_agent_travel_planner_final.ipynb   # Sequential agents
+│   └── README.md                                 # Task 7 docs
+│
 ├── .env                          # Environment variables
 ├── .gitignore
 ├── README.md
@@ -1105,7 +1590,8 @@ This allows sessions to be paused and loaded later.
 ├── Task 1 (Output Parser).pdf
 ├── Task 2 (AI Agent).pdf
 ├── Task 3 (Fine-Tuning).pdf
-└── Task 4 (RAG).pdf
+├── Task 4 (RAG).pdf
+└── Task 7 (Multi-Agent Collaboration).pdf
 ```
 
 > **Security Note:** Make sure `.env` and any other files containing secrets are included in `.gitignore` and are never committed to the repository.
@@ -1164,7 +1650,7 @@ cd "Task 2 - langgraph"
 python main.py
 ```
 
-## Task 1, 3, 4, 6, Mid-Project: Jupyter Notebooks
+## Task 1, 3, 4, 6, 7, Mid-Project: Jupyter Notebooks
 
 ```bash
 jupyter notebook
@@ -1183,6 +1669,7 @@ Then open the respective `.ipynb` files.
 * Guardrails
 * LangChain Output Parsers
 * LangChain Expression Language (LCEL)
+* Format instructions for JSON schemas
 
 ## Agentic AI
 
@@ -1191,9 +1678,11 @@ Then open the respective `.ipynb` files.
 * Conditional graph routing
 * Stateful AI agents
 * Multi-tool orchestration
+* **Sequential multi-agent pipelines**
 * Agentic loops
 * Tool execution
 * ReAct (Reasoning + Acting) pattern
+* **Specialized agent roles**
 
 ## Vector Databases & Retrieval (RAG)
 
@@ -1209,13 +1698,16 @@ Then open the respective `.ipynb` files.
 
 * Rolling conversation summaries
 * Token-efficient memory windows
+* **ConversationBufferWindowMemory (k=4)**
 * Object-Oriented Bot Architectures for session state
 * JSON persistence for saving and loading conversation histories
 * Full conversation backups
+* **Context retention across agent calls**
 
 ## Data & Backend Integration
 
 * Pydantic schema validation
+* **JsonOutputParser for universal LLM compatibility**
 * External API integration
 * Geolocation and timezone services
 * SQLite database integration
@@ -1224,6 +1716,7 @@ Then open the respective `.ipynb` files.
 * ETL pipelines for large datasets
 * Fuzzy string matching
 * Environment and API-key management
+* **Type-safe dictionary access patterns**
 
 ## LLM Fine-Tuning
 
@@ -1242,6 +1735,9 @@ Then open the respective `.ipynb` files.
 * Interactive user validation
 * Rate limit management
 * Data type compatibility handling
+* **API-specific workarounds (Groq compatibility)**
+* **Safe dictionary access with `.get()` methods**
+* **Type conversion for mixed LLM outputs**
 
 ---
 
@@ -1249,7 +1745,17 @@ Then open the respective `.ipynb` files.
 
 The repository demonstrates a complete progression from foundational LLM concepts to production-ready AI systems:
 
-**Foundation** → **Agents** → **Specialization** → **RAG** → **Memory** → **Integration**
+**Foundation** → **Agents** → **Specialization** → **RAG** → **Memory** → **Multi-Agent Collaboration** → **Integration**
+
+### **Progression Timeline**
+
+1. **Task 1**: Structured data extraction
+2. **Task 2**: Single agent with multiple tools
+3. **Task 3**: Domain-specific model specialization
+4. **Task 4**: Knowledge retrieval systems (RAG)
+5. **Task 6**: Stateful conversation management
+6. **Mid-Project**: Full application (RAG + Agents + Memory)
+7. **Task 7**: Multi-agent collaboration & sequential pipelines ✨
 
 ---
 
@@ -1275,6 +1781,7 @@ faiss_index/
 logs/
 memory/
 my_watchlist.xlsx
+conversation_log.json
 ```
 
 Never commit actual API keys, tokens, passwords, or other credentials to GitHub.
@@ -1285,7 +1792,7 @@ Never commit actual API keys, tokens, passwords, or other credentials to GitHub.
 
 **Bavly Waleed**
 
-AI Engineer | Machine Learning | Computer Vision | Agentic AI
+AI Engineer | Machine Learning | Computer Vision | Agentic AI | Multi-Agent Systems
 
 ---
 
@@ -1300,13 +1807,15 @@ This repository demonstrates the practical application of modern AI engineering 
 * Database-backed agents
 * Parameter-efficient fine-tuning
 * Domain-specific language models
-* **Large-scale RAG systems (44K+ documents)**
+* Large-scale RAG systems (44K+ documents)
 * Retrieval-Augmented Generation (RAG) for localized knowledge bases
 * Conversational memory and persistent session management
-* **Production-ready conversational AI assistants**
-* **End-to-end application development**
+* **Multi-agent collaboration and orchestration** ✨
+* **Sequential agent pipelines with structured data flow** ✨
+* Production-ready conversational AI assistants
+* End-to-end application development
 
-The overall progression demonstrates how modern AI systems can evolve from simple LLM interactions into structured, autonomous, stateful, specialized, and production-ready AI applications that solve real-world problems.
+The overall progression demonstrates how modern AI systems can evolve from simple LLM interactions into structured, autonomous, stateful, specialized, **collaborative**, and production-ready AI applications that solve real-world problems through **intelligent agent coordination**.
 
 ---
 
@@ -1316,4 +1825,4 @@ This project is created for educational purposes as part of AI Engineering cours
 
 ---
 
-**Last Updated**: September 20, 2026
+**Last Updated**: September 21, 2026
