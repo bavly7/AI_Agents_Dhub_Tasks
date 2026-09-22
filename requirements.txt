@@ -20,3 +20,6 @@ openpyxl
 torch
 torchvision
 torchaudio --index-url https://download.pytorch.org/whl/cu121
+fastapi
+uvicorn
+pydantic[email]

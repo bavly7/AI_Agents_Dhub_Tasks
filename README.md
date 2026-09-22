@@ -21,6 +21,8 @@ This repository serves as a showcase of practical AI engineering solutions desig
 | **Task 6: Advanced Conversational Memory Management** | Implementing stateful conversational memory with rolling summaries and persistent JSON storage |
 | **🎬 Mid-Project: Movie Recommendation AI Assistant** | Full-stack RAG-powered conversational agent with watchlist management and personalized recommendations |
 | **Task 7: Multi-Agent Travel Planning System** | Sequential multi-agent collaboration with conversational intake and specialized planning agents |
+| **Task 8: Customer Support Ticket System** | AI-powered customer support ticket routing using LangGraph, FastAPI, Groq, and SQLite |
+
 
 ---
 
@@ -1533,6 +1535,334 @@ This task successfully demonstrates:
 
 ---
 
+# 🎫 Task 8: Customer Support Ticket System
+
+## 📋 Objective
+
+Build an AI-powered customer support ticket routing system that automatically analyzes incoming support queries, classifies the problem, determines its priority, detects multiple issues, and creates persistent support tickets.
+
+The system combines **LangGraph**, **FastAPI**, **Groq LLM**, and **SQLite** to create an end-to-end ticket processing workflow.
+
+## 🎯 What I Built
+
+The system provides the following capabilities:
+
+* **Intelligent Problem Classification** — Categorizes support queries into:
+
+  * Technical
+  * Billing
+  * Account
+  * General
+  * NONE for unsupported or off-topic requests
+* **Priority Assignment** — Assigns:
+
+  * HIGH
+  * MEDIUM
+  * LOW
+* **Multi-Issue Detection** — Identifies multiple problems in a single customer query and creates separate tickets for each issue.
+* **UUID-Based Tickets** — Generates a unique identifier for every ticket.
+* **Email-Based Retrieval** — Retrieves all tickets associated with a customer's email.
+* **Persistent Storage** — Stores ticket information in a SQLite database.
+* **REST API** — Exposes the ticket system through FastAPI endpoints.
+
+## 🏗️ System Architecture
+
+The core workflow is implemented using **LangGraph**:
+
+```text
+Customer Query
+      ↓
+┌──────────────────────┐
+│ Classify Problem     │
+└──────────┬───────────┘
+           ↓
+     Is problem NONE?
+       /          \
+     Yes           No
+      ↓             ↓
+     END     Classify Priority
+                    ↓
+             Create Ticket(s)
+                    ↓
+              SQLite Database
+                    ↓
+                   END
+```
+
+### LangGraph Workflow
+
+The workflow separates the ticket-processing logic into dedicated nodes:
+
+1. **Problem Classification Node**
+
+   * Analyzes the customer's query.
+   * Identifies the support category.
+   * Detects whether the query contains multiple issues.
+
+2. **Conditional Routing**
+
+   * Routes unsupported queries directly to the end.
+   * Continues valid support requests through the ticket workflow.
+
+3. **Priority Classification Node**
+
+   * Determines the urgency of each identified issue.
+   * Assigns HIGH, MEDIUM, or LOW priority.
+
+4. **Ticket Creation Node**
+
+   * Generates UUID-based ticket IDs.
+   * Creates individual tickets for each detected problem.
+   * Stores the tickets in SQLite.
+
+## 🧠 Problem Categories
+
+| Category      | Examples                                   |
+| ------------- | ------------------------------------------ |
+| **Technical** | System errors, bugs, outages               |
+| **Billing**   | Payment issues, duplicate charges, refunds |
+| **Account**   | Login, password, profile problems          |
+| **General**   | Feature questions, how-to requests         |
+| **NONE**      | Spam, unsupported, or off-topic queries    |
+
+## 🚨 Priority System
+
+| Priority   | Response Time | Examples                                                             |
+| ---------- | ------------- | -------------------------------------------------------------------- |
+| **HIGH**   | 2 hours       | Complete outage, security breach, critical payment errors, data loss |
+| **MEDIUM** | 24 hours      | Partial disruptions, billing inquiries, account access issues        |
+| **LOW**    | 48 hours      | General questions, minor UI issues, documentation requests           |
+
+## 🌐 FastAPI REST API
+
+The LangGraph workflow is exposed through a FastAPI server.
+
+### Create Ticket
+
+```text
+POST /api/ticket
+```
+
+Example request:
+
+```json
+{
+  "query": "I can't access my account and was charged twice",
+  "name": "John Doe",
+  "email": "john@example.com"
+}
+```
+
+A multi-issue query can produce multiple tickets:
+
+```json
+{
+  "success": true,
+  "message": "Successfully created 2 ticket(s)",
+  "tickets": [
+    {
+      "ticket_id": "uuid-1",
+      "problem_type": "Account",
+      "priority": "HIGH",
+      "estimated_response_time": "2 hours"
+    },
+    {
+      "ticket_id": "uuid-2",
+      "problem_type": "Billing",
+      "priority": "MEDIUM",
+      "estimated_response_time": "24 hours"
+    }
+  ]
+}
+```
+
+### Available Endpoints
+
+| Method   | Endpoint                  | Purpose                            |
+| -------- | ------------------------- | ---------------------------------- |
+| **POST** | `/api/ticket`             | Create one or more support tickets |
+| **GET**  | `/api/tickets/{email}`    | Retrieve tickets by customer email |
+| **GET**  | `/api/tickets`            | Retrieve all tickets               |
+| **GET**  | `/api/ticket/{ticket_id}` | Retrieve a ticket by ID            |
+| **GET**  | `/health`                 | Check API health                   |
+
+## 🗄️ Database Design
+
+Ticket data is persisted using SQLite.
+
+```sql
+CREATE TABLE tickets (
+    id TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    email TEXT NOT NULL,
+    query TEXT NOT NULL,
+    problem_type TEXT NOT NULL,
+    priority TEXT NOT NULL,
+    estimated_response_time TEXT,
+    created_at TIMESTAMP NOT NULL
+);
+```
+
+The database stores the customer's information, original query, classification result, priority, expected response time, and creation timestamp.
+
+## 🧪 Example Scenarios
+
+### Single Issue
+
+```text
+Query:
+"I can't login to my account"
+
+Result:
+1 ticket → Account → HIGH
+```
+
+### Multiple Issues
+
+```text
+Query:
+"The system is down and I was charged twice!"
+
+Result:
+2 tickets
+
+Technical → HIGH
+Billing   → MEDIUM
+```
+
+### Unsupported Query
+
+```text
+Query:
+"Buy cheap watches now!"
+
+Result:
+No support ticket created.
+The system identifies the query as unsupported.
+```
+
+## 🛠️ Technical Challenges & Solutions
+
+### Challenge 1: Multi-Issue Queries
+
+**Problem:** A customer can mention multiple independent problems in a single message.
+
+**Solution:** The classification workflow identifies separate issues and creates an individual ticket for each problem, allowing them to be routed and prioritized independently.
+
+### Challenge 2: Conditional Workflow Routing
+
+**Problem:** Unsupported queries should not continue through the ticket creation pipeline.
+
+**Solution:** LangGraph conditional routing checks the classification result and terminates the workflow when the problem type is `NONE`.
+
+### Challenge 3: Persistent Ticket Management
+
+**Problem:** Tickets need to remain available after the application restarts.
+
+**Solution:** Implemented SQLite-based persistence with dedicated database operations for creating and retrieving tickets.
+
+### Challenge 4: API Integration
+
+**Problem:** The AI workflow needs to be accessible to external clients.
+
+**Solution:** Wrapped the LangGraph workflow with FastAPI REST endpoints and added Swagger/OpenAPI documentation for interactive testing.
+
+## 📊 System Specifications
+
+| Component                  | Technology            |
+| -------------------------- | --------------------- |
+| **LLM Provider**           | Groq                  |
+| **Model**                  | `openai/gpt-oss-120b` |
+| **Agent Framework**        | LangGraph             |
+| **API Framework**          | FastAPI               |
+| **Database**               | SQLite                |
+| **Data Validation**        | Pydantic              |
+| **Ticket IDs**             | UUID                  |
+| **Environment Management** | python-dotenv         |
+| **Language**               | Python                |
+
+## 🎓 Key Concepts Demonstrated
+
+### Agentic AI
+
+* ✅ LangGraph workflow orchestration
+* ✅ Conditional routing
+* ✅ LLM-based classification
+* ✅ Multi-step AI processing
+
+### Backend Engineering
+
+* ✅ FastAPI REST API development
+* ✅ Request/response validation
+* ✅ SQLite database integration
+* ✅ Persistent CRUD operations
+* ✅ API health monitoring
+
+### AI-Powered Automation
+
+* ✅ Automatic problem classification
+* ✅ Priority assignment
+* ✅ Multi-issue detection
+* ✅ Automated ticket generation
+* ✅ Email-based ticket retrieval
+
+## 📁 Project Structure
+
+```text
+Task 8 - Customer Support Ticket System/
+│
+├── agent/
+│   ├── __init__.py
+│   ├── nodes.py          # Classification and ticket creation nodes
+│   ├── edges.py          # Conditional routing logic
+│   └── agent.py          # LangGraph workflow
+│
+├── database.py            # SQLite schema and operations
+├── main.py                # FastAPI server and endpoints
+├── test_api.py            # API testing
+├── requirements.txt       # Dependencies
+├── .env.example           # Environment configuration
+└── README.md              # Task documentation
+```
+
+## 🚀 How to Run
+
+```bash
+pip install -r requirements.txt
+```
+
+Create a `.env` file:
+
+```env
+GROQ_API_KEY=your_groq_api_key_here
+```
+
+Start the FastAPI server:
+
+```bash
+python main.py
+```
+
+The API can then be tested through the FastAPI Swagger UI:
+
+```text
+http://localhost:8000/docs
+```
+
+## 🎯 Learning Outcomes
+
+This task demonstrates:
+
+1. **LangGraph Workflow Design** — Building a structured AI workflow with nodes and conditional edges.
+2. **LLM-Based Classification** — Using an LLM to understand and categorize natural-language support requests.
+3. **Multi-Issue Processing** — Converting one customer message into multiple independently managed tickets.
+4. **Backend API Development** — Exposing an AI workflow through FastAPI.
+5. **Database Integration** — Persisting AI-generated results using SQLite.
+6. **End-to-End AI Engineering** — Connecting an LLM, workflow engine, API layer, and database into a complete application.
+
+---
+
+
 # 🗂️ Project Structure
 
 ```text
@@ -1581,6 +1911,21 @@ This task successfully demonstrates:
 ├── Task 7 - Multi-Agent Travel Planner/
 │   ├── multi_agent_travel_planner_final.ipynb   # Sequential agents
 │   └── README.md                                 # Task 7 docs
+│
+│
+├── Task 8 - Customer Support Ticket System/
+│   ├── agent/
+│   │   ├── **init**.py
+│   │   ├── nodes.py
+│   │   ├── edges.py
+│   │   └── agent.py
+│   │
+│   ├── database.py
+│   ├── main.py
+│   ├── test_api.py
+│   ├── requirements.txt
+│   └── .env.example
+
 │
 ├── .env                          # Environment variables
 ├── .gitignore
