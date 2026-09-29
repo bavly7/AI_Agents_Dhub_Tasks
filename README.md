@@ -2,43 +2,47 @@
 
 Welcome to the **AI Engineering Practice & Frameworks** repository!
 
-This project showcases hands-on implementations of modern LLM architectures, structured data extraction, autonomous multi-tool AI agents, domain-specific LLM fine-tuning, Retrieval-Augmented Generation (RAG), conversational memory management, and **multi-agent collaboration systems** using **LangChain, LangGraph, Pydantic, Hugging Face, FAISS, PEFT, and Groq**.
+This project showcases hands-on implementations of modern AI architectures, structured data extraction, autonomous tool-using agents, domain-specific LLM fine-tuning, Retrieval-Augmented Generation (RAG), conversational memory, multi-agent collaboration, and **AI-powered backend applications** using **LangChain, LangGraph, Pydantic, Hugging Face, FAISS, FastAPI, Streamlit, SQLite, and Groq**.
+
+The repository demonstrates a progression from foundational LLM concepts toward **stateful, tool-using, database-connected, and user-facing AI applications**.
 
 ---
 
-## 📌 Repository Overview
+# 📌 Repository Overview
 
-This repository serves as a showcase of practical AI engineering solutions designed to solve real-world automation and intelligent processing challenges.
+This repository serves as a showcase of practical AI engineering solutions designed to solve real-world automation, information processing, planning, and intelligent assistant challenges.
 
-### Tasks
+## Tasks
 
-| Task | Description |
-|------|-------------|
-| **Task 1: Structured Information Extractor** | Enforcing strict schema outputs on unstructured candidate data |
-| **Task 2: Autonomous Multi-Tool AI Agent** | Building a stateful, tool-calling agent using LangGraph and custom APIs |
-| **Task 3: Domain-Specific LLM Fine-Tuning** | Fine-tuning an open-source LLM for specialized medical customer support |
-| **Task 4: Simple RAG System** | Building a retriever and generator system using FAISS and PDF documents |
-| **Task 6: Advanced Conversational Memory Management** | Implementing stateful conversational memory with rolling summaries and persistent JSON storage |
-| **🎬 Mid-Project: Movie Recommendation AI Assistant** | Full-stack RAG-powered conversational agent with watchlist management and personalized recommendations |
-| **Task 7: Multi-Agent Travel Planning System** | Sequential multi-agent collaboration with conversational intake and specialized planning agents |
-| **Task 8: Customer Support Ticket System** | AI-powered customer support ticket routing using LangGraph, FastAPI, Groq, and SQLite |
-
+| Task                                                  | Description                                                                                                     |
+| ----------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| **Task 1: Structured Information Extractor**          | Enforcing strict schema outputs on unstructured candidate data                                                  |
+| **Task 2: Autonomous Multi-Tool AI Agent**            | Building a stateful, tool-calling agent using LangGraph and custom APIs                                         |
+| **Task 3: Domain-Specific LLM Fine-Tuning**           | Fine-tuning an open-source LLM for specialized medical customer support                                         |
+| **Task 4: Simple RAG System**                         | Building a retriever and generator system using FAISS and PDF documents                                         |
+| **Task 6: Advanced Conversational Memory Management** | Implementing stateful conversational memory with rolling summaries and persistent JSON storage                  |
+| **🎬 Mid-Project: Movie Recommendation AI Assistant** | Full-stack RAG-powered conversational agent with watchlist management and personalized recommendations          |
+| **Task 7: Multi-Agent Travel Planning System**        | Sequential multi-agent collaboration with conversational intake and specialized planning agents                 |
+| **Task 8: Customer Support Ticket System**            | AI-powered customer support ticket routing using LangGraph, FastAPI, Groq, and SQLite                           |
+| **Task 9: AI Wedding Planner Agent**                  | Tool-using wedding planning agent for searching and booking wedding halls with LangGraph, SQLite, and Streamlit |
 
 ---
 
-## ⚙️ Core Stack & Tools
+# ⚙️ Core Stack & Tools
 
-| Category | Technologies |
-|----------|--------------|
-| **LLM Frameworks** | LangChain, LangGraph |
+| Category                   | Technologies                                       |
+| -------------------------- | -------------------------------------------------- |
+| **LLM Frameworks**         | LangChain, LangGraph                               |
 | **Fine-Tuning & Training** | Hugging Face Transformers, PEFT, TRL, BitsAndBytes |
-| **Vector Databases & RAG** | FAISS, HuggingFaceEmbeddings, PyPDF |
-| **Data Validation** | Pydantic v2 |
-| **LLM Engine** | Groq — `openai/gpt-oss-120b`, Mistral 7B |
-| **Geolocation** | geopy, timezonefinder, pytz |
-| **Database** | SQLite, JSON, Excel (XLSX) |
-| **Environment Management** | python-dotenv |
-| **Language** | Python |
+| **Vector Databases & RAG** | FAISS, HuggingFaceEmbeddings, PyPDF                |
+| **Data Validation**        | Pydantic v2                                        |
+| **LLM Engine**             | Groq — `openai/gpt-oss-120b`, Mistral 7B           |
+| **Backend API**            | FastAPI                                            |
+| **Frontend / UI**          | Streamlit                                          |
+| **Databases**              | SQLite, JSON, Excel (XLSX)                         |
+| **Geolocation**            | geopy, timezonefinder, pytz                        |
+| **Environment Management** | python-dotenv                                      |
+| **Language**               | Python                                             |
 
 ---
 
@@ -46,7 +50,17 @@ This repository serves as a showcase of practical AI engineering solutions desig
 
 ## 📋 Project Overview
 
-An intelligent movie recommendation assistant that combines multiple AI concepts into a production-ready conversational agent. This project represents the culmination of all previously learned techniques: **RAG architecture**, **LangChain agents**, **FAISS vector search**, **conversational memory**, and **tool orchestration**.
+An intelligent movie recommendation assistant that combines multiple AI concepts into a production-oriented conversational agent.
+
+This project represents the culmination of several previously learned techniques:
+
+* **RAG architecture**
+* **LangChain agents**
+* **FAISS vector search**
+* **Conversational memory**
+* **Tool orchestration**
+* **Persistent user data**
+* **Personalized recommendations**
 
 ## 🎯 Objective
 
@@ -55,463 +69,121 @@ Build a full-featured movie assistant that can:
 1. **Search semantically** across 44,000+ movies using natural language
 2. **Manage a personal watchlist** with Excel persistence
 3. **Track viewing history** with ratings and notes
-4. **Provide personalized recommendations** based on watch history
-5. **Maintain conversation context** with memory management
-6. **Execute multi-step tasks** autonomously using ReAct agents
+4. **Provide personalized recommendations**
+5. **Maintain conversation context**
+6. **Execute multi-step tasks** using ReAct agents
 
 ---
 
 ## 🚀 What I Built
 
-### 🎥 **Core Features**
+### 🎥 Core Features
 
-#### 1. **Semantic Movie Search (RAG)**
-- **Dataset**: 44,503 movies from The Movie Database (TMDB)
-- **Embedding Model**: `sentence-transformers/all-MiniLM-L6-v2`
-- **Vector Store**: FAISS with 44,503 indexed documents
-- **Search Capability**: Natural language queries like "mind-bending sci-fi movies" or "movies about dreams and reality"
+#### 1. Semantic Movie Search (RAG)
 
-#### 2. **Watchlist Management System**
-- **Add movies** to a personal watchlist with validation
-- **Mark as watched** with custom ratings (e.g., "8/10")
-- **Cancel/remove** movies from the list
-- **View filtered lists** by status (Want to Watch, Watched, Cancelled)
-- **Persistence**: Excel (.xlsx) format for easy manual access
+* **Dataset**: 44,503 movies from The Movie Database (TMDB)
+* **Embedding Model**: `sentence-transformers/all-MiniLM-L6-v2`
+* **Vector Store**: FAISS with 44,503 indexed documents
+* **Search Capability**: Natural-language queries such as:
 
-#### 3. **Personalized Recommendations**
-- Analyzes user's watch history and ratings
-- Recommends similar movies **not already in the watchlist**
-- Uses semantic similarity based on liked movies
-- Filters out duplicates automatically
+  * "mind-bending sci-fi movies"
+  * "movies about dreams and reality"
 
-#### 4. **Conversational Memory**
-- **Rolling window memory**: Keeps last 4 messages to prevent token overflow
-- **Full conversation backup**: All interactions saved to JSON
-- **Context-aware responses**: Agent remembers previous queries
-- **Session persistence**: Can resume conversations after restart
+#### 2. Watchlist Management System
 
-#### 5. **Intelligent Agent with Tools**
-- **ReAct Agent Pattern**: Thinks, acts, observes, and responds
-- **6 Specialized Tools**:
-  - `search_movies`: Semantic search across movie database
-  - `add_to_watchlist`: Add movies with fuzzy matching
-  - `mark_watched`: Track viewing history with ratings
-  - `cancel_movie`: Remove unwanted movies
-  - `view_watchlist`: Display current watchlist
-  - `get_recommendations`: Generate personalized suggestions
+* Add movies to a personal watchlist
+* Mark movies as watched
+* Store custom ratings
+* Cancel/remove movies
+* View filtered lists
+* Persist data using Excel (`.xlsx`)
 
-#### 6. **Interactive Validation**
-- **Fuzzy matching**: Suggests alternatives when exact title not found
-- **User confirmation**: Asks "Did you mean X?" for ambiguous queries
-- **Graceful error handling**: Falls back to simple responses on failures
+#### 3. Personalized Recommendations
 
-#### 7. **Performance Monitoring & Logging**
-- Response time tracking for each query
-- Complete interaction logging to `logs/session.log`
-- Memory usage optimization (4-message window)
-- Error logging for debugging
+* Analyzes watched movies and ratings
+* Finds semantically similar movies
+* Excludes movies already present in the watchlist
+* Filters duplicate recommendations
+
+#### 4. Conversational Memory
+
+* Rolling 4-message memory window
+* Full conversation backup
+* Context-aware responses
+* Session persistence through JSON
+
+#### 5. Intelligent Agent with Tools
+
+Six specialized tools:
+
+* `search_movies`
+* `add_to_watchlist`
+* `mark_watched`
+* `cancel_movie`
+* `view_watchlist`
+* `get_recommendations`
+
+The agent follows a ReAct-style reasoning and tool-execution workflow.
+
+#### 6. Interactive Validation
+
+* Fuzzy movie title matching
+* Alternative suggestions
+* User confirmation for ambiguous titles
+* Graceful error handling
+
+#### 7. Performance Monitoring
+
+* Response-time tracking
+* Interaction logging
+* Error logging
+* Memory optimization
 
 ---
 
 ## 🏗️ Technical Architecture
 
-### **System Components**
-
 ```text
-┌────────────────────────────────────────────────────────┐
-│          Movie Recommendation AI Assistant              │
-└────────────────────────────────────────────────────────┘
-                         │
-        ┌────────────────┼────────────────┐
-        │                │                │
-        ▼                ▼                ▼
-┌──────────────┐  ┌──────────────┐  ┌──────────────┐
-│   RAG Core   │  │   Agent      │  │   Memory     │
-│   (FAISS)    │  │   (ReAct)    │  │   Manager    │
-└──────────────┘  └──────────────┘  └──────────────┘
-        │                │                │
-        ▼                ▼                ▼
-┌──────────────┐  ┌──────────────┐  ┌──────────────┐
-│  44K Movies  │  │   6 Tools    │  │ JSON Storage │
-│  Vectorized  │  │   Executor   │  │ 4-msg Window │
-└──────────────┘  └──────────────┘  └──────────────┘
+                    Movie Recommendation AI Assistant
+                                  │
+              ┌───────────────────┼───────────────────┐
+              │                   │                   │
+              ▼                   ▼                   ▼
+        ┌────────────┐      ┌────────────┐      ┌────────────┐
+        │  RAG Core  │      │   Agent    │      │   Memory   │
+        │   FAISS    │      │   ReAct    │      │   Manager  │
+        └─────┬──────┘      └─────┬──────┘      └─────┬──────┘
+              │                   │                   │
+              ▼                   ▼                   ▼
+        44K Movies             6 Tools            JSON Storage
+        Vectorized             Executor            4 Messages
 ```
 
-### **Data Flow**
+### Data Flow
 
 ```text
 User Query
     ↓
-Memory Manager (Load Context)
+Memory Manager
     ↓
-ReAct Agent (Reasoning)
+ReAct Agent
     ↓
-Tool Selection & Execution
+Tool Selection
+    ↓
+Tool Execution
     ↓
 ┌─────────────────────────────────┐
-│  FAISS Search                   │  ← Semantic Retrieval
-│  Watchlist Operations           │  ← Excel CRUD
-│  Recommendation Engine          │  ← History Analysis
+│ FAISS Search                    │
+│ Watchlist Operations            │
+│ Recommendation Engine           │
 └─────────────────────────────────┘
     ↓
 Response Generation
     ↓
-Memory Update (Save Context)
+Memory Update
     ↓
 User Response + Performance Log
 ```
-
----
-
-## 💡 Implementation Highlights
-
-### **1. Data Processing Pipeline**
-
-```python
-# Loaded 45,466 movies → Cleaned to 44,503
-# ✓ Removed movies without plots
-# ✓ Parsed JSON genres from strings
-# ✓ Extracted directors and top 5 cast members
-# ✓ Merged credits with metadata
-# ✓ Created rich document representations
-```
-
-**Document Format:**
-```text
-Toy Story (1995)
-Genre: Animation, Comedy, Family
-Director: John Lasseter
-Cast: Tom Hanks, Tim Allen, Don Rickles, Jim Varney, Wallace Shawn
-Rating: 7.7/10
-
-Plot: Led by Woody, Andy's toys live happily in his room until...
-```
-
-### **2. Vector Store Creation**
-
-```python
-# Created 44,503 LangChain Documents
-# Embedded using all-MiniLM-L6-v2 (384 dimensions)
-# Indexed with FAISS in 124.43 seconds
-# Saved to disk for fast loading
-```
-
-### **3. Memory Optimization**
-
-```python
-class MemoryManager:
-    """Strict 4-message window to avoid rate limits"""
-    
-    def __init__(self, max_recent=4):
-        self.max_recent = 4  # 2 conversation pairs
-        self.memory = {'recent_messages': []}
-    
-    def add_message(self, role, content):
-        # Truncate long messages to 800 chars
-        # Keep ONLY last 4 messages
-        # No LLM summarization needed!
-        if len(self.memory['recent_messages']) > 4:
-            self.memory['recent_messages'] = 
-                self.memory['recent_messages'][-4:]
-```
-
-**Why 4 messages?**
-- Prevents Groq rate limit errors
-- Eliminates need for expensive LLM summarization
-- Maintains immediate conversation context
-- Full backup saved separately for recovery
-
-### **4. Watchlist Manager with Error Handling**
-
-```python
-class WatchlistManager:
-    """Excel-based watchlist with fuzzy matching"""
-    
-    def add_to_watchlist(self, movie_name: str):
-        # 1. Fuzzy search in movie database
-        # 2. Return suggestions if no exact match
-        # 3. Check for duplicates in watchlist
-        # 4. Add with metadata (genre, year, etc.)
-        # 5. Handle file permission errors gracefully
-        
-    def mark_watched(self, movie_name: str, rating: str):
-        # 1. Find movie in watchlist
-        # 2. Update status to "Watched"
-        # 3. Record timestamp
-        # 4. Save rating (if provided)
-        # 5. Retry logic for file locks
-```
-
-### **5. ReAct Agent Configuration**
-
-```python
-# Tools → Agent → Executor
-tools = [
-    Tool(name="search_movies", ...),
-    Tool(name="add_to_watchlist", ...),
-    Tool(name="mark_watched", ...),
-    Tool(name="cancel_movie", ...),
-    Tool(name="view_watchlist", ...),
-    Tool(name="get_recommendations", ...)
-]
-
-agent = create_react_agent(llm, tools, prompt)
-agent_executor = AgentExecutor(
-    agent=agent,
-    tools=tools,
-    verbose=True,
-    max_iterations=3,  # Prevent infinite loops
-    handle_parsing_errors=True
-)
-```
-
----
-
-## 📊 Project Statistics
-
-| Metric | Value |
-|--------|-------|
-| **Movies Indexed** | 44,503 |
-| **Vector Dimensions** | 384 (MiniLM-L6-v2) |
-| **Index Build Time** | 124.43 seconds |
-| **Memory Window** | 4 messages (2 pairs) |
-| **Tools Available** | 6 specialized functions |
-| **Max Agent Iterations** | 3 per query |
-| **Avg Response Time** | 2-7 seconds |
-| **Storage Format** | Excel (watchlist), JSON (memory) |
-
----
-
-## 🎯 Key Concepts Demonstrated
-
-### **Advanced RAG Implementation**
-- ✅ Large-scale document indexing (44K+ items)
-- ✅ Semantic search with FAISS
-- ✅ Document chunking and metadata preservation
-- ✅ Persistent vector store for fast loading
-
-### **Agentic AI Patterns**
-- ✅ ReAct (Reasoning + Acting) agent architecture
-- ✅ Multi-tool orchestration
-- ✅ Dynamic tool selection based on intent
-- ✅ Iterative reasoning loops with max_iterations safety
-
-### **Memory Management**
-- ✅ Rolling window memory (4-message optimization)
-- ✅ Conversation history persistence
-- ✅ Full backup system for recovery
-- ✅ Token-efficient context management
-
-### **Production Engineering**
-- ✅ Error handling and graceful degradation
-- ✅ Performance monitoring and logging
-- ✅ File lock retry logic
-- ✅ Interactive user validation
-- ✅ Fuzzy matching for user input
-- ✅ Data type conversion handling (Excel compatibility)
-
----
-
-## 💻 Sample Interactions
-
-### **Example 1: Semantic Search**
-
-```text
-You: What are some mind-bending sci-fi movies?
-
-Bot: Found movies:
-
-1. Inception (2010)
-   Science Fiction, Thriller | 9.0/10
-   A thief who steals corporate secrets through dream-sharing...
-
-2. Interstellar (2014)
-   Science Fiction, Drama | 8.6/10
-   Explores time dilation and black holes in space exploration...
-
-3. The Matrix (1999)
-   Science Fiction, Action | 8.7/10
-   A computer hacker learns about the true nature of reality...
-```
-
-### **Example 2: Watchlist Management**
-
-```text
-You: Add Inception to my watchlist
-
-Bot: ✅ Added 'Inception' (2010) to your watchlist!
-
-You: I watched Inception and loved it! Rate it 9/10
-
-Bot: ✅ Marked 'Inception' as watched!
-
-You: Give me recommendations
-
-Bot: Based on what you've watched, try:
-
-1. Interstellar (2014)
-   Science Fiction, Drama | 8.6/10
-
-2. Shutter Island (2010)
-   Mystery, Thriller | 8.2/10
-
-3. The Prestige (2006)
-   Drama, Mystery, Science Fiction | 8.5/10
-```
-
-### **Example 3: Interactive Validation**
-
-```text
-You: Add intersteller to my list
-
-Bot: I couldn't find that exact movie. Did you mean 'Interstellar'? 
-(Please reply Yes or No)
-
-You: Yes
-
-Bot: ✅ Added 'Interstellar' (2014) to your watchlist!
-```
-
----
-
-## 🛠️ Technical Challenges Solved
-
-### **Challenge 1: Groq Rate Limits**
-**Problem**: Long conversation history caused rate limit errors  
-**Solution**: Implemented strict 4-message rolling window, eliminated LLM-based summarization
-
-### **Challenge 2: Excel File Locking**
-**Problem**: `PermissionError` when watchlist file is open  
-**Solution**: Added retry logic with exponential backoff + user-friendly error messages
-
-### **Challenge 3: Agent Infinite Loops**
-**Problem**: Agent sometimes repeated tool calls unnecessarily  
-**Solution**: Set `max_iterations=3` and improved prompt formatting instructions
-
-### **Challenge 4: Fuzzy Movie Title Matching**
-**Problem**: Users might misspell movie titles  
-**Solution**: Implemented partial string matching + interactive confirmation system
-
-### **Challenge 5: Excel Data Type Errors**
-**Problem**: DateTime/Rating columns caused dtype errors when updating  
-**Solution**: Explicitly convert columns to `object` type before assignment
-
----
-
-## 📁 Project File Structure
-
-```text
-movie_recommender/
-│
-├── movie_recommender.ipynb          # Main implementation notebook
-├── README.md                        # This file
-│
-├── data/
-│   ├── movies_metadata.csv          # 45,466 movies (raw)
-│   └── credits.csv                  # Cast and crew data
-│
-├── faiss_index/                     # Persisted vector store
-│   ├── index.faiss                  # FAISS index file
-│   └── index.pkl                    # Metadata pickle
-│
-├── memory/
-│   ├── conversation_memory.json     # 4-message window storage
-│   └── full_backup.json             # Complete conversation history
-│
-├── logs/
-│   └── session.log                  # Performance and error logs
-│
-├── my_watchlist.xlsx                # User's movie watchlist
-│
-└── .env                             # GROQ_API_KEY configuration
-```
-
----
-
-## 🚀 How to Run
-
-### **1. Install Dependencies**
-
-```bash
-pip install langchain langchain-groq langchain-huggingface langchain-community
-pip install faiss-cpu sentence-transformers pandas openpyxl python-dotenv
-```
-
-### **2. Configure API Key**
-
-Create `.env` file:
-```env
-GROQ_API_KEY=your_groq_api_key_here
-```
-
-### **3. Prepare Data**
-
-Download TMDB dataset:
-```bash
-# Place these files in data/ directory:
-# - movies_metadata.csv
-# - credits.csv
-```
-
-### **4. Run the Notebook**
-
-```bash
-jupyter notebook movie_recommender.ipynb
-```
-
-### **5. Start Interactive Chat**
-
-```python
-# In the notebook, run:
-interactive_chat()
-```
-
----
-
-## 📈 Performance Metrics
-
-### **Vector Store Performance**
-- **Build Time**: 124.43 seconds (one-time)
-- **Load Time**: ~2 seconds (subsequent runs)
-- **Search Time**: <100ms per query
-
-### **Agent Response Times**
-- **Simple Query**: 1-3 seconds
-- **Tool Execution**: 2-5 seconds
-- **Complex Multi-Step**: 5-10 seconds
-
-### **Memory Efficiency**
-- **Context Window**: 4 messages (~1200 tokens)
-- **Token Savings**: ~70% vs full history
-- **Rate Limit Errors**: 0 (after optimization)
-
----
-
-## 🎓 Learning Outcomes
-
-This mid-project successfully demonstrates:
-
-1. **End-to-End RAG System**: From raw CSV to production-ready semantic search
-2. **Agent Design Patterns**: ReAct architecture with real-world tool integration
-3. **Production Considerations**: Error handling, logging, retry logic, user validation
-4. **Memory Optimization**: Token-efficient conversation management
-5. **Data Engineering**: ETL pipeline for movie metadata + credits
-6. **User Experience**: Interactive validation, fuzzy matching, helpful error messages
-7. **State Management**: Excel persistence, JSON backups, session recovery
-
----
-
-## 🔮 Future Enhancements
-
-### **Planned Features**
-- [ ] Filter watchlist by genre and rating range
-- [ ] Export recommendations to PDF report
-- [ ] Multi-user support with separate watchlists
-- [ ] Integration with streaming service APIs
-- [ ] Sentiment analysis on user reviews
-- [ ] Movie trailer embedding and playback
-- [ ] Social features (share watchlists)
-- [ ] GraphRAG for actor/director relationship queries
 
 ---
 
@@ -525,7 +197,7 @@ Develop a reliable information extraction engine that transforms unstructured jo
 
 ### 1. Schema Definition
 
-Created a `Candidate` Pydantic `BaseModel` enforcing a structured schema containing:
+Created a `Candidate` Pydantic `BaseModel` containing:
 
 * `Candidate_name`
 * `Years_of_experience`
@@ -533,26 +205,22 @@ Created a `Candidate` Pydantic `BaseModel` enforcing a structured schema contain
 * `Skills`
 * `Highest_Education`
 
-Pydantic ensures that the extracted information follows the expected data types and structure.
+Pydantic ensures that extracted information follows the expected structure and data types.
 
 ### 2. Structured Parsing
 
-Integrated LangChain's `PydanticOutputParser` to inject the required JSON schema and formatting instructions into the LLM prompt.
-
-This ensures that the model returns data that can be validated against the predefined Pydantic schema.
+Integrated LangChain's `PydanticOutputParser` to inject schema and formatting instructions into the LLM prompt.
 
 ### 3. Strict Guardrails
 
-The extraction prompt explicitly instructs the model to:
+The extraction prompt instructs the model to:
 
 * Never fabricate missing information
-* Return `null` when a parameter is unavailable
-* Return an empty array `[]` when no skills are available
-* Extract only information supported by the provided text
+* Return `null` when information is unavailable
+* Return `[]` when no skills are available
+* Extract only information supported by the input
 
-### 4. LCEL Chain Assembly
-
-The extraction pipeline was implemented using **LangChain Expression Language (LCEL)**:
+### 4. LCEL Chain
 
 ```text
 PromptTemplate
@@ -561,8 +229,6 @@ ChatGroq
       ↓
 PydanticOutputParser
 ```
-
-This creates a clean and modular extraction workflow.
 
 ## 💻 Expected Output
 
@@ -586,101 +252,55 @@ This creates a clean and modular extraction workflow.
 
 ## 📋 Objective
 
-Build an AI Agent capable of dynamic goal execution.
+Build an AI agent capable of dynamically executing goals through multiple tools.
 
-The agent interprets natural-language queries, autonomously selects the appropriate tool, extracts the required parameters, interacts with internal databases and APIs, and maintains the conversation flow statefully.
-
-## 🧠 Agent Architecture
-
-The agent was implemented using `LangGraph StateGraph`, with conditional routing and custom tool integrations.
+The agent interprets natural-language queries, selects appropriate tools, extracts parameters, interacts with databases and APIs, and maintains state through LangGraph.
 
 ## 🧰 Available Tools
 
-### 📊 Analytics Tool — `analytics_tool`
+### 📊 Analytics Tool
 
-Computes statistical metrics over numerical arrays:
+`analytics_tool`
+
+Computes:
 
 * Average
 * Maximum
 * Minimum
 * Count
 
-Example:
+### 🌍 Location Information Tool
 
-```text
-Average: 25.4
-Maximum: 50
-Minimum: 10
-Count: 8
-```
+`location_tool`
 
-### 🌍 Location Information Tool — `location_tool`
-
-Provides geographic and timezone information for cities and landmarks.
-
-It integrates:
+Uses:
 
 * geopy
 * Nominatim API
 * timezonefinder
 * pytz
 
-The tool can retrieve:
+It can retrieve:
 
-* Exact location information
+* Location
 * Country
 * Timezone
-* Current local time
+* Local time
 
-### 📅 Schedule Management Tool — `scheduler_tool`
+### 📅 Schedule Management Tool
 
-Connects to a local SQLite database:
+`scheduler_tool`
 
-```text
-schedule.db
-```
-
-The scheduler supports:
+Uses SQLite to support:
 
 * Event creation
 * Event deletion
 * Schedule management
-* Automatic conflict detection
+* Conflict detection
 
-Before inserting a new event, the tool checks whether an existing event conflicts with the requested time.
+---
 
-## 🔄 Agentic Workflow Architecture
-
-The LangGraph workflow consists of three main components.
-
-### 1. Agent Node — `call_model`
-
-The agent evaluates:
-
-* Conversation history
-* System instructions
-* Available tools
-* User intent
-
-It then decides whether to:
-
-* Call a tool
-* Return a final response
-
-### 2. Tool Node — `ToolNode`
-
-`ToolNode` executes the tool calls generated by the LLM.
-
-The available Python tools are executed natively through LangGraph's tool-calling mechanism.
-
-### 3. Conditional Edge — `should_continue`
-
-The conditional routing determines whether the workflow should:
-
-* Continue to the tools when tool calls are present
-* Terminate at `END` when the agent has generated the final response
-
-## 📐 Workflow Diagram
+## 🔄 LangGraph Workflow
 
 ```text
                  +-----------+
@@ -690,7 +310,6 @@ The conditional routing determines whether the workflow should:
                        v
                 +--------------+
                 |  agent Node  |
-                | call_model() |
                 +------+-------+
                        |
                  tool_calls?
@@ -702,7 +321,6 @@ The conditional routing determines whether the workflow should:
           |  tools   |      | END |
           +----+-----+      +-----+
                |
-               | Tool Output
                |
                +------------------+
                                   |
@@ -712,7 +330,7 @@ The conditional routing determines whether the workflow should:
                            +--------------+
 ```
 
-This creates an iterative agentic loop:
+This creates an iterative workflow:
 
 ```text
 User Request
@@ -736,115 +354,45 @@ Final Response
 
 ## 📋 Objective
 
-The goal of this project is to fine-tune a pre-trained open-source language model to specialize in answering technical support questions, transforming a general-purpose model into a highly focused, domain-specific assistant for medical conversations.
+Fine-tune an open-source LLM to specialize in answering domain-specific medical support questions.
 
-## 💡 Implementation Details
+## 💡 Implementation
 
-### 1. Model Initialization
-
-Loaded the pre-trained open-source model:
+### Model
 
 ```text
 mistralai/Mistral-7B-Instruct-v0.3
 ```
 
-To drastically reduce memory usage, the model was loaded using **4-bit quantization** through `BitsAndBytesConfig`.
+Loaded using 4-bit quantization with `BitsAndBytesConfig`.
 
-### 2. Dataset Preparation
-
-Extracted and prepared the following dataset:
+### Dataset
 
 ```text
 FreedomIntelligence/medical-o1-reasoning-SFT
 ```
 
-The dataset contains structured medical Q&A pairs.
+### Fine-Tuning
 
-The data was mapped and formatted into Mistral's instruction style:
+Used:
 
-```text
-<s>[INST] {question} [/INST] {answer} </s>
-```
+* PEFT
+* LoRA
+* Hugging Face Transformers
+* TRL
+* 4-bit quantization
 
-This format prepares the dataset for instruction fine-tuning.
-
-### 3. Parameter-Efficient Fine-Tuning (PEFT)
-
-Configured and applied **LoRA (Low-Rank Adaptation)**.
-
-| Parameter | Value |
-|-----------|-------|
-| Rank (`r`) | 16 |
-| Alpha (`lora_alpha`) | 32 |
-| Dropout | 0.05 |
+| Parameter            | Value |
+| -------------------- | ----- |
+| Rank (`r`)           | 16    |
+| Alpha                | 32    |
+| Dropout              | 0.05  |
 | Trainable Parameters | ~1.1% |
+| Epochs               | 2     |
 
-The adapters target attention projection layers such as:
+The resulting adapters and tokenizer configuration were saved locally.
 
-* `q_proj`
-* `k_proj`
-* `v_proj`
-* Other attention projection layers
-
-This significantly reduces the number of parameters that need to be trained.
-
-### 4. Training and Persistence
-
-The model was trained for **2 epochs**.
-
-A larger effective batch size was simulated using **gradient accumulation**.
-
-The resulting:
-
-* Fine-tuned adapter weights
-* Tokenizer configuration
-
-were successfully saved locally.
-
-### 5. Evaluation and Integration
-
-Generated and compared responses before and after fine-tuning to evaluate the model's adaptation to the medical domain.
-
-The specialized model was then integrated into a LangChain workflow using:
-
-* `HuggingFacePipeline`
-* `PromptTemplate`
-* `StrOutputParser`
-
-## 💻 Expected Output
-
-```text
-================================================================================
-COMPARISON: BEFORE vs AFTER FINE-TUNING
-================================================================================
-
-📝 Question:
-
-If suddenly when I walk my stomach started to hurt me,
-what do you think it is and what is your suggestion?
-
-🔴 BEFORE FINE-TUNING (General Mistral):
-
-I'm not a doctor, but I can suggest some common causes
-of stomach pain...
-
-(Proceeds with generic possibilities such as indigestion
-or food poisoning.)
-
-🟢 AFTER FINE-TUNING (Medical-Specialized Mistral):
-
-If you experience stomach pain while walking, it could be
-due to a condition called intermittent claudication.
-This condition is often associated with peripheral artery
-disease...
-
-To address this issue, it's important to manage your
-overall cardiovascular health.
-
-================================================================================
-```
-
-> **Note:** The example above represents the observed model behavior during evaluation and should not be interpreted as medical advice or as a clinically validated diagnosis.
+> **Note:** The medical outputs demonstrated by the project are experimental model behavior and are not clinically validated medical advice.
 
 ---
 
@@ -852,107 +400,49 @@ overall cardiovascular health.
 
 ## 📋 Objective
 
-Use **RAG (Retrieval-Augmented Generation)** to answer questions based on PDF documents serving as a knowledge base.
+Build a Retrieval-Augmented Generation system capable of answering questions based only on a local PDF knowledge base.
 
-The goal is to build a robust system consisting of a retriever and generator that strictly grounds its answers in the provided context and refuses to hallucinate.
+## 📄 Document Processing
 
-## 💡 Implementation Details
+* 7 Parallel Computing PDFs
+* Recursive character splitting
+* Chunk size: `1000`
+* Chunk overlap: `150`
+* 56 resulting chunks
 
-### 1. Document Loading and Splitting
+## 🔎 Vector Search
 
-Loaded **7 PDFs** containing course material on Parallel Computing from a local directory.
-
-The documents were split using LangChain's `RecursiveCharacterTextSplitter`.
-
-Configuration:
-
-* Chunk Size: `1000` characters
-* Chunk Overlap: `150` characters
-* Result: `56` semantic chunks
-
-This structure optimizes the documents for vector retrieval.
-
-### 2. Vector Database & Embedding
-
-Initialized the following lightweight embedding model:
+Embedding model:
 
 ```text
 all-MiniLM-L6-v2
 ```
 
-The 56 chunks were transformed into numerical vectors and stored in a **FAISS** vector database.
+Vector store:
 
-The implementation uses a **Flat Index with L2 distance** for brute-force similarity search, which is suitable for this small dataset.
+```text
+FAISS
+```
 
-### 3. Action 1: Retriever Testing
+Index:
 
-Before passing data to the LLM, a dedicated retrieval flow was built to:
+```text
+Flat Index with L2 distance
+```
 
-* Search the FAISS database
-* Retrieve the top 3 most relevant chunks
-* Verify that semantic search isolates the relevant context
+Top 3 relevant chunks are retrieved for each question.
 
-### 4. Action 2: Generation with Strict Guardrails
+## 🤖 Generation
 
-Integrated Groq using:
+Groq:
 
 ```text
 openai/gpt-oss-120b
 ```
 
-as the generator LLM.
+The prompt instructs the model to refuse unsupported questions rather than hallucinate.
 
-A restrictive `PromptTemplate` was engineered to reduce hallucination.
-
-The prompt explicitly forces the model to return a fallback response when the answer is missing from the retrieved context:
-
-```text
-Ana ma3rafsh el ma3looma de, msh mawgooda fe el PDFs.
-```
-
-### 5. Final RAG Chain
-
-Combined the retriever and the LLM using:
-
-* `create_retrieval_chain`
-* `create_stuff_documents_chain`
-
-This creates an end-to-end question-answering pipeline.
-
-## 💻 Expected Output
-
-```text
---- Running Full RAG Pipeline ---
-
-Question:
-What is the difference between shared memory and distributed memory in parallel computing?
-
-Answer:
-
-Shared memory
-- One global memory space that all processors can address directly.
-- Programming is easier because data are accessed with ordinary pointers.
-- Communication happens through memory reads and writes.
-- Fast data sharing through direct memory access.
-- Drawbacks include limited scalability, cache-coherency overhead,
-  synchronization requirements, and higher hardware complexity.
-
-Distributed memory
-- Each processor has its own private local memory.
-- Processors exchange data through a network.
-- Memory capacity scales with the number of processors.
-- Local memory access is fast and avoids cache-coherency issues.
-- The programmer must explicitly manage communication and data distribution.
-
-Key difference:
-
-Shared memory provides a single globally accessible address space with
-simpler programming but limited scalability, whereas distributed memory
-gives each processor its own memory, providing better scalability at the
-cost of more complex communication management.
-```
-
-Example of an unsupported question:
+Example:
 
 ```text
 Question:
@@ -968,90 +458,75 @@ I don't know, this information is not in the context.
 
 ## 📋 Objective
 
-Build a robust, stateful memory system for conversational agents to maintain context over long interactions.
+Build a stateful conversational system that maintains useful context over long interactions while persisting conversation data.
 
-This implementation integrates:
+## Features
 
 * Rolling summaries
 * Conversation history
 * Persistent JSON storage
+* Timestamps
+* Session recovery
+* OOP-based architecture
 
-to manage conversation state effectively.
-
-## 💡 Implementation Details
-
-### 1. Rolling Summarization
-
-Implemented a dynamic summary engine:
-
-```python
-_summarize_conversation()
-```
-
-The function condenses older messages into a compact summary while preserving:
-
-* Essential information
-* Key topics discussed
-* Important facts
-* Decisions made
-
-### 2. Object-Oriented State Management (OOP)
-
-Encapsulated the entire workflow within a modular:
+Main class:
 
 ```python
 ConversationalAgent
 ```
 
-class.
-
-The agent:
-
-* Automatically creates a context prompt
-* Combines a system message, rolling summary, and user input
-* Maintains a complete `conversation_history`
-* Stores timestamps for each interaction
-
-### 3. Persistent Storage (JSON)
-
-Added serialization methods:
+Persistence methods:
 
 ```python
 save_conversation()
 load_conversation()
 ```
 
-These allow the conversation history and summary to be saved locally.
-
-Default file:
-
-```text
-conversation_log.json
-```
-
-This allows sessions to be paused and loaded later.
-
-## 💻 Expected Output
-
-### JSON Save Format
+Example storage:
 
 ```json
 {
   "conversation_history": [
     {
-      "user": "Hi! My name is Bavly and I'm an AI engineer working on AI projects.",
-      "assistant": "Hello Bavly! 👋 Nice to meet you. It's great to connect with an AI engineer. What kind of AI projects are you working on right now? Anything exciting you'd like to share or discuss?",
-      "timestamp": "2026-09-14T13:54:19.260451"
-    },
-    {
-      "user": "I'm 21 years old.",
-      "assistant": "Thanks for letting me know! 😊 Is there anything specific you'd like to chat about or any project you're working on that I can help with?",
-      "timestamp": "2026-09-14T13:56:14.619902"
+      "user": "Hi! My name is Bavly and I'm an AI engineer.",
+      "assistant": "Hello Bavly! Nice to meet you.",
+      "timestamp": "2026-09-14T13:54:19"
     }
   ],
-  "summary": "**Summary of Conversation**\n\n- **Participants**\n  - *User (Bavly)*: AI engineer, 21 years old, working on a chatbot with memory management.\n  - *Assistant*: Provides guidance and acknowledges user information."
+  "summary": "User is an AI engineer working on AI projects."
 }
 ```
+
+---
+
+# 🎬 Mid-Project: Movie Recommendation AI Assistant
+
+The Mid-Project combines multiple previously learned concepts into a complete AI application.
+
+### Concepts Combined
+
+* RAG
+* FAISS
+* Agents
+* Tools
+* Memory
+* Persistent storage
+* Recommendation systems
+* Fuzzy matching
+* Logging
+* Error handling
+
+### Statistics
+
+| Metric               | Value          |
+| -------------------- | -------------- |
+| Movies Indexed       | 44,503         |
+| Vector Dimensions    | 384            |
+| Index Build Time     | 124.43 seconds |
+| Memory Window        | 4 messages     |
+| Tools                | 6              |
+| Max Agent Iterations | 3              |
+| Search Time          | <100 ms        |
 
 ---
 
@@ -1059,479 +534,67 @@ This allows sessions to be paused and loaded later.
 
 ## 📋 Objective
 
-Build an intelligent, two-phase travel planning system that combines **conversational AI** with **multi-agent collaboration** to collect user requirements and generate personalized travel plans.
+Build an intelligent two-phase travel planning system combining conversational requirement gathering with sequential multi-agent collaboration.
 
-The system demonstrates:
-- Interactive requirement gathering with memory
-- Sequential multi-agent pipeline architecture
-- Structured data flow between specialized agents
-- Production-ready error handling
+## Phase 1: Intake Agent
 
-## 🎯 What I Built
+Collects:
 
-### **Two-Phase Architecture**
+* Destination
+* Budget
+* Interests
+* Duration
 
-#### **Phase 1: Interactive Intake Agent**
-A conversational agent that collects travel requirements through natural dialogue:
-- **Memory**: `ConversationBufferWindowMemory` (k=4) for context retention
-- **Validation**: Ensures all 4 required fields are collected
-- **Output**: Validated JSON with destination, budget, interests, and time
-
-#### **Phase 2: Sequential Multi-Agent Pipeline**
-Four specialized agents working in sequence:
-
-1. **Destination Agent**: Analyzes user preferences and recommends specific places and activities
-2. **Budget Agent**: Creates detailed cost breakdown across all expense categories
-3. **Itinerary Agent**: Generates day-by-day schedule with timing and locations
-4. **Recommendation Agent**: Synthesizes all information into a beautiful markdown travel report
-
----
-
-## 🏗️ System Architecture
-
-### **Data Flow Diagram**
+Uses:
 
 ```text
-┌─────────────────────────────────────────────────────────┐
-│             PHASE 1: INTAKE AGENT                       │
-│                                                          │
-│   User Input → Memory (k=4) → LLM → JSON Validation    │
-│                                           ↓              │
-│                          Requirements JSON               │
-└─────────────────────────────────────────────────────────┘
-                            ↓
-┌─────────────────────────────────────────────────────────┐
-│          PHASE 2: MULTI-AGENT PIPELINE                  │
-│                                                          │
-│  Requirements JSON                                       │
-│         ↓                                                │
-│  Agent 1 (Destination) → Places & Activities JSON       │
-│         ↓                                                │
-│  Agent 2 (Budget) → Cost Breakdown JSON                 │
-│         ↓                                                │
-│  Agent 3 (Itinerary) → Day-by-Day Schedule JSON        │
-│         ↓                                                │
-│  Agent 4 (Recommendation) → Markdown Report             │
-└─────────────────────────────────────────────────────────┘
+ConversationBufferWindowMemory(k=4)
 ```
 
-### **Agent Communication Pattern**
+## Phase 2: Multi-Agent Pipeline
+
+Four specialized agents:
+
+1. **Destination Agent**
+2. **Budget Agent**
+3. **Itinerary Agent**
+4. **Recommendation Agent**
+
+### Architecture
 
 ```text
-Intake Agent (Conversational)
-    ↓ [JSON: destination, budget, interests, time]
-    
-Destination Agent (Analytical)
-    ↓ [JSON: places[], activities[], highlights]
-    
-Budget Agent (Financial)
-    ↓ [JSON: accommodation, food, transport, total, status]
-    
-Itinerary Agent (Planning)
-    ↓ [JSON: daily_schedule[], duration]
-    
-Recommendation Agent (Synthesis)
-    ↓ [Markdown: Complete travel guide]
+User
+ ↓
+Intake Agent
+ ↓
+Requirements JSON
+ ↓
+Destination Agent
+ ↓
+Places & Activities JSON
+ ↓
+Budget Agent
+ ↓
+Cost Breakdown JSON
+ ↓
+Itinerary Agent
+ ↓
+Daily Schedule JSON
+ ↓
+Recommendation Agent
+ ↓
+Final Markdown Report
 ```
 
----
-
-## 💡 Implementation Highlights
-
-### **1. Conversational Intake with Memory**
-
-```python
-class ConversationBufferWindowMemory:
-    """Keeps last 4 messages for context"""
-    k = 4  # 2 conversation pairs
-```
-
-**Features:**
-- Natural dialogue flow
-- Friendly, enthusiastic tone
-- Tracks collected vs. missing information
-- Outputs JSON only when all 4 fields present
-
-**Sample Interaction:**
-```text
-🤖: Where would you like to go?
-👤: Egypt
-🤖: Great choice! What's your budget?
-👤: $2000 for two people
-🤖: Perfect! What are your interests?
-👤: Beaches
-🤖: Lastly, how many days do you have?
-👤: 5 days
-
-✅ {
-  "destination": "Egypt",
-  "budget": "$2000 for two persons",
-  "interests": "beaches",
-  "time": "5 days"
-}
-```
-
-### **2. JsonOutputParser for Groq Compatibility**
-
-**Challenge:** Groq's `openai/gpt-oss-120b` model doesn't support `with_structured_output()` (requires tool calling)
-
-**Solution:** Replaced Pydantic-based parsing with `JsonOutputParser`
-
-```python
-# ❌ Doesn't work with Groq
-structured_llm = llm.with_structured_output(Model)
-
-# ✅ Works universally
-json_parser = JsonOutputParser()
-chain = prompt | llm | json_parser
-```
-
-### **3. Type-Safe Data Conversion**
-
-**Problem:** LLMs sometimes return lists of dicts instead of strings
-
-```json
-❌ ["{"name": "Pyramid"}", "{"name": "Museum"}"]
-✅ ["Pyramid", "Museum"]
-```
-
-**Solution:** Helper function handles both formats
-
-```python
-def convert_to_string_list(data):
-    """Extracts strings from dicts or returns as-is"""
-    result = []
-    for item in data:
-        if isinstance(item, dict):
-            # Extract from 'name', 'place', 'activity', etc.
-            result.append(extract_relevant_value(item))
-        else:
-            result.append(str(item))
-    return result
-```
-
-### **4. Structured Prompts with Format Instructions**
-
-Each agent receives explicit JSON schema examples:
-
-```python
-prompt = f"""
-Return ONLY valid JSON in this format:
-{{
-  "places": ["Place 1", "Place 2"],
-  "activities": ["Activity 1", "Activity 2"],
-  "highlights": "Text here"
-}}
-"""
-```
-
-### **5. Safe Dictionary Access**
-
-**Before (causes AttributeError):**
-```python
-places = destination_output.places  # Fails - dict, not object
-```
-
-**After (production-safe):**
-```python
-places = destination_output.get('places', [])  # Returns [] if missing
-```
-
----
-
-## 🛠️ Technical Challenges & Solutions
-
-### **Challenge 1: Tool Calling Incompatibility**
-
-**Error:**
-```python
-BadRequestError: Tool choice is required, but model did not call a tool
-```
-
-**Root Cause:**  
-`with_structured_output()` uses function calling internally, which Groq doesn't support
-
-**Solution:**  
-Switched to `JsonOutputParser` which works with any JSON-capable LLM
-
-**Impact:** ✅ Universal compatibility across LLM providers
-
----
-
-### **Challenge 2: Mixed Data Types from LLM**
-
-**Error:**
-```python
-TypeError: sequence item 0: expected str instance, dict found
-```
-
-**Root Cause:**  
-LLM returned `[{"place": "Cairo"}, {"place": "Alexandria"}]` instead of `["Cairo", "Alexandria"]`
-
-**Solution:**  
-Created `convert_to_string_list()` helper function
-
-**Impact:** ✅ Robust handling of variable LLM outputs
-
----
-
-### **Challenge 3: Dictionary vs Object Access**
-
-**Error:**
-```python
-AttributeError: 'dict' object has no attribute 'places'
-```
-
-**Root Cause:**  
-`JsonOutputParser` returns Python dicts, not Pydantic objects
-
-**Solution:**  
-Replaced all `.attribute` access with `.get('key', default)`
-
-**Impact:** ✅ No crashes from missing keys, graceful degradation
-
----
-
-## 📊 System Specifications
-
-| Component | Technology |
-|-----------|------------|
-| **LLM Provider** | Groq |
-| **Model** | `openai/gpt-oss-120b` |
-| **Framework** | LangChain (LCEL) |
-| **Memory** | ConversationBufferWindowMemory (k=4) |
-| **Output Parsing** | JsonOutputParser |
-| **Agent Pattern** | Sequential Pipeline (not LangGraph) |
-| **Data Flow** | JSON → JSON → JSON → Markdown |
-| **Error Handling** | `.get()` methods, type conversion |
-
----
-
-## 💻 Sample Output
-
-### **Phase 1: Requirements Collection**
-
-```json
-{
-  "destination": "Egypt",
-  "budget": "$2000 USD for two persons",
-  "interests": "beaches",
-  "time": "5 days"
-}
-```
-
-### **Phase 2: Agent Pipeline**
-
-**Agent 1 Output (Destination):**
-```json
-{
-  "places": [
-    "Hurghada Beach",
-    "Sharm El Sheikh",
-    "Marsa Alam",
-    "Alexandria Corniche",
-    "Ras Mohammed National Park",
-    "Giftun Island"
-  ],
-  "activities": [
-    "Snorkeling in Red Sea",
-    "Beach relaxation",
-    "Diving excursions",
-    "Boat tours",
-    "Water sports",
-    "Sunset viewing"
-  ],
-  "highlights": "Egypt's Red Sea coast offers pristine beaches..."
-}
-```
-
-**Agent 2 Output (Budget):**
-```json
-{
-  "accommodation": "$60 per night, $300 total",
-  "food": "$30 per day, $150 total",
-  "transport": "$200 (flights + local)",
-  "activities": "$100 (snorkeling, tours)",
-  "miscellaneous": "$50 (tips, souvenirs)",
-  "total": "$800",
-  "budget_status": "Well within budget - $1200 remaining"
-}
-```
-
-**Agent 3 Output (Itinerary):**
-```json
-{
-  "daily_schedule": [
-    "Day 1: Arrive Hurghada, check-in, evening beach walk",
-    "Day 2: Morning snorkeling, afternoon at Giftun Island",
-    "Day 3: Day trip to Ras Mohammed National Park",
-    "Day 4: Beach relaxation, water sports, sunset cruise",
-    "Day 5: Morning dive, afternoon departure"
-  ],
-  "duration": "5 days"
-}
-```
-
-**Agent 4 Output (Final Report):**
-```markdown
-# 🌊 Your Egypt Beach Paradise - 5-Day Escape
-
-## ✨ Destination Overview
-
-Egypt's Red Sea coast offers world-class beaches, vibrant coral reefs, 
-and year-round sunshine. Perfect for beach lovers seeking relaxation 
-and underwater adventures.
-
-## 📅 Your Day-by-Day Itinerary
-
-### Day 1: Arrival & Beach Welcome
-- **Morning**: Arrive in Hurghada
-- **Afternoon**: Hotel check-in, settle in
-- **Evening**: Sunset beach walk along the corniche
-
-### Day 2: Underwater Wonderland
-- **Morning**: Snorkeling trip (Red Sea coral reefs)
-- **Afternoon**: Boat excursion to Giftun Island
-- **Evening**: Fresh seafood dinner by the beach
-
-[... complete 5-day schedule ...]
-
-## 💰 Budget Breakdown
-
-| Category | Cost |
-|----------|------|
-| Accommodation | $300 |
-| Food | $150 |
-| Transport | $200 |
-| Activities | $100 |
-| Miscellaneous | $50 |
-| **Total** | **$800** |
-
-✅ **Budget Status**: Well within your $2000 budget! 
-You have $1200 remaining for upgrades or extensions.
-
-## 🎒 What to Pack
-
-- Sunscreen (SPF 50+)
-- Swimwear and beach towel
-- Snorkeling gear (or rent locally)
-- Light, breathable clothing
-- Hat and sunglasses
-- Underwater camera
-
-## 💡 Travel Tips
-
-1. **Best Time**: October-April for cooler weather
-2. **Currency**: Egyptian Pound (cash recommended)
-3. **Snorkeling**: Book through hotel for best rates
-4. **Safety**: Red Sea is generally safe for swimming
-
-## 🌟 Final Thoughts
-
-Your Egyptian beach getaway combines relaxation with adventure. 
-The Red Sea's crystal-clear waters and vibrant marine life will 
-create memories to last a lifetime. Safe travels! 🏖️✨
-```
-
----
-
-## 🎓 Key Concepts Demonstrated
-
-### **Multi-Agent Collaboration**
-- ✅ Sequential agent pipeline (not parallel)
-- ✅ Structured data passing between agents
-- ✅ Specialized agent roles (analysis, budgeting, planning, synthesis)
-- ✅ Clean separation of concerns
-
-### **Conversational AI**
-- ✅ Stateful conversation with memory
-- ✅ Context retention (k=4 window)
-- ✅ Natural language to JSON extraction
-- ✅ Interactive requirement gathering
-
-### **Production Engineering**
-- ✅ Error-tolerant dictionary access
-- ✅ Type conversion for mixed LLM outputs
-- ✅ API compatibility handling (Groq-specific)
-- ✅ Graceful degradation (missing keys return defaults)
-
-### **LangChain Patterns**
-- ✅ LCEL chain composition
-- ✅ JsonOutputParser for universal compatibility
-- ✅ PromptTemplate with format instructions
-- ✅ Memory integration
-
----
-
-## 📁 Project Structure
-
-```text
-Task 7/
-│
-├── multi_agent_travel_planner_final.ipynb    # Complete implementation
-│
-├── README.md                                  # This documentation
-│
-└── .env                                       # GROQ_API_KEY
-```
-
----
-
-## 🚀 How to Run
-
-### **1. Install Dependencies**
-
-```bash
-pip install langchain langchain-groq langchain-core python-dotenv
-```
-
-### **2. Configure API Key**
-
-Create `.env`:
-```env
-GROQ_API_KEY=your_groq_api_key_here
-```
-
-### **3. Run the Notebook**
-
-```bash
-jupyter notebook multi_agent_travel_planner_final.ipynb
-```
-
-### **4. Execute Cells Sequentially**
-
-Run all cells from top to bottom. The final cell starts the interactive chat:
-
-```python
-if __name__ == "__main__":
-    result = main()
-```
-
----
-
-## 🎯 Learning Outcomes
-
-This task successfully demonstrates:
-
-1. **Two-Phase System Design**: Separating intake from processing
-2. **Sequential Agent Orchestration**: Passing structured data between agents
-3. **API Compatibility Handling**: Groq-specific workarounds
-4. **Production Error Handling**: Type safety, missing key handling
-5. **Conversational Memory**: Context retention without token bloat
-6. **Structured Output Parsing**: JSON schemas with format instructions
-7. **End-to-End Pipeline**: From natural language to formatted report
-
----
-
-## 🔮 Potential Enhancements
-
-- [ ] Add parallel agent execution for speed (using asyncio)
-- [ ] Integrate external APIs (flights, hotels, weather)
-- [ ] Add user feedback loop (refine recommendations)
-- [ ] Implement conversation history persistence
-- [ ] Add image generation for destinations
-- [ ] Export reports to PDF format
-- [ ] Multi-language support for international travelers
+## Key Concepts
+
+* Sequential multi-agent orchestration
+* Specialized agent roles
+* Structured data passing
+* Conversational memory
+* JSON output parsing
+* Error-tolerant processing
+* LangChain LCEL
 
 ---
 
@@ -1539,83 +602,19 @@ This task successfully demonstrates:
 
 ## 📋 Objective
 
-Build an AI-powered customer support ticket routing system that automatically analyzes incoming support queries, classifies the problem, determines its priority, detects multiple issues, and creates persistent support tickets.
+Build an AI-powered customer support ticket routing system using LangGraph, FastAPI, Groq, and SQLite.
 
-The system combines **LangGraph**, **FastAPI**, **Groq LLM**, and **SQLite** to create an end-to-end ticket processing workflow.
+## Features
 
-## 🎯 What I Built
+* Problem classification
+* Priority assignment
+* Multi-issue detection
+* UUID ticket generation
+* Email-based retrieval
+* SQLite persistence
+* REST API
 
-The system provides the following capabilities:
-
-* **Intelligent Problem Classification** — Categorizes support queries into:
-
-  * Technical
-  * Billing
-  * Account
-  * General
-  * NONE for unsupported or off-topic requests
-* **Priority Assignment** — Assigns:
-
-  * HIGH
-  * MEDIUM
-  * LOW
-* **Multi-Issue Detection** — Identifies multiple problems in a single customer query and creates separate tickets for each issue.
-* **UUID-Based Tickets** — Generates a unique identifier for every ticket.
-* **Email-Based Retrieval** — Retrieves all tickets associated with a customer's email.
-* **Persistent Storage** — Stores ticket information in a SQLite database.
-* **REST API** — Exposes the ticket system through FastAPI endpoints.
-
-## 🏗️ System Architecture
-
-The core workflow is implemented using **LangGraph**:
-
-```text
-Customer Query
-      ↓
-┌──────────────────────┐
-│ Classify Problem     │
-└──────────┬───────────┘
-           ↓
-     Is problem NONE?
-       /          \
-     Yes           No
-      ↓             ↓
-     END     Classify Priority
-                    ↓
-             Create Ticket(s)
-                    ↓
-              SQLite Database
-                    ↓
-                   END
-```
-
-### LangGraph Workflow
-
-The workflow separates the ticket-processing logic into dedicated nodes:
-
-1. **Problem Classification Node**
-
-   * Analyzes the customer's query.
-   * Identifies the support category.
-   * Detects whether the query contains multiple issues.
-
-2. **Conditional Routing**
-
-   * Routes unsupported queries directly to the end.
-   * Continues valid support requests through the ticket workflow.
-
-3. **Priority Classification Node**
-
-   * Determines the urgency of each identified issue.
-   * Assigns HIGH, MEDIUM, or LOW priority.
-
-4. **Ticket Creation Node**
-
-   * Generates UUID-based ticket IDs.
-   * Creates individual tickets for each detected problem.
-   * Stores the tickets in SQLite.
-
-## 🧠 Problem Categories
+## Problem Categories
 
 | Category      | Examples                                   |
 | ------------- | ------------------------------------------ |
@@ -1623,213 +622,886 @@ The workflow separates the ticket-processing logic into dedicated nodes:
 | **Billing**   | Payment issues, duplicate charges, refunds |
 | **Account**   | Login, password, profile problems          |
 | **General**   | Feature questions, how-to requests         |
-| **NONE**      | Spam, unsupported, or off-topic queries    |
+| **NONE**      | Unsupported or off-topic queries           |
 
-## 🚨 Priority System
+## Priority
 
-| Priority   | Response Time | Examples                                                             |
-| ---------- | ------------- | -------------------------------------------------------------------- |
-| **HIGH**   | 2 hours       | Complete outage, security breach, critical payment errors, data loss |
-| **MEDIUM** | 24 hours      | Partial disruptions, billing inquiries, account access issues        |
-| **LOW**    | 48 hours      | General questions, minor UI issues, documentation requests           |
+| Priority   | Response Time |
+| ---------- | ------------- |
+| **HIGH**   | 2 hours       |
+| **MEDIUM** | 24 hours      |
+| **LOW**    | 48 hours      |
 
-## 🌐 FastAPI REST API
-
-The LangGraph workflow is exposed through a FastAPI server.
-
-### Create Ticket
+## Architecture
 
 ```text
-POST /api/ticket
+Customer Query
+      ↓
+Problem Classification
+      ↓
+Is Problem NONE?
+   /          \
+ Yes           No
+  ↓             ↓
+END       Priority Classification
+                ↓
+          Ticket Creation
+                ↓
+          SQLite Database
+                ↓
+               END
 ```
 
-Example request:
+## FastAPI Endpoints
 
-```json
-{
-  "query": "I can't access my account and was charged twice",
-  "name": "John Doe",
-  "email": "john@example.com"
-}
+| Method   | Endpoint                  | Purpose                    |
+| -------- | ------------------------- | -------------------------- |
+| **POST** | `/api/ticket`             | Create one or more tickets |
+| **GET**  | `/api/tickets/{email}`    | Retrieve customer tickets  |
+| **GET**  | `/api/tickets`            | Retrieve all tickets       |
+| **GET**  | `/api/ticket/{ticket_id}` | Retrieve ticket by ID      |
+| **GET**  | `/health`                 | API health check           |
+
+---
+
+# 💍 Task 9: AI Wedding Planner Agent
+
+## 📋 Objective
+
+Build an AI-powered wedding planning assistant that helps users **find and book wedding halls** through natural conversation.
+
+The system combines:
+
+* **LangGraph**
+* **LangChain tool calling**
+* **Groq**
+* **Pydantic**
+* **SQLite**
+* **Streamlit**
+
+The agent is designed to collect wedding requirements conversationally, search a local hall database, present available options, and complete a booking while checking date availability.
+
+---
+
+## 🎯 What I Built
+
+The AI Wedding Planner provides two main capabilities:
+
+### 1. 🔎 Wedding Hall Search
+
+The agent collects the user's requirements:
+
+* Number of guests
+* Preferred hall style
+* Food preference
+
+It then calls:
+
+```text
+search_halls_tool
 ```
 
-A multi-issue query can produce multiple tickets:
+The tool searches the SQLite database for halls whose capacity can accommodate the requested number of guests.
 
-```json
-{
-  "success": true,
-  "message": "Successfully created 2 ticket(s)",
-  "tickets": [
-    {
-      "ticket_id": "uuid-1",
-      "problem_type": "Account",
-      "priority": "HIGH",
-      "estimated_response_time": "2 hours"
-    },
-    {
-      "ticket_id": "uuid-2",
-      "problem_type": "Billing",
-      "priority": "MEDIUM",
-      "estimated_response_time": "24 hours"
-    }
-  ]
-}
+### 2. 📅 Hall Booking
+
+After the user selects a hall, the agent collects:
+
+* Hall name
+* Wedding date
+* Customer name
+
+It then calls:
+
+```text
+book_hall_tool
 ```
 
-### Available Endpoints
+The booking tool checks whether the selected hall is already booked on the requested date before inserting the booking.
 
-| Method   | Endpoint                  | Purpose                            |
-| -------- | ------------------------- | ---------------------------------- |
-| **POST** | `/api/ticket`             | Create one or more support tickets |
-| **GET**  | `/api/tickets/{email}`    | Retrieve tickets by customer email |
-| **GET**  | `/api/tickets`            | Retrieve all tickets               |
-| **GET**  | `/api/ticket/{ticket_id}` | Retrieve a ticket by ID            |
-| **GET**  | `/health`                 | Check API health                   |
+---
 
-## 🗄️ Database Design
+# 🏗️ Task 9 Architecture
 
-Ticket data is persisted using SQLite.
+```text
+                         User
+                           │
+                           ▼
+                 ┌──────────────────┐
+                 │   Streamlit UI   │
+                 │  Chat Interface  │
+                 └────────┬─────────┘
+                          │
+                          ▼
+                 ┌──────────────────┐
+                 │    LangGraph     │
+                 │   StateGraph     │
+                 └────────┬─────────┘
+                          │
+                          ▼
+                 ┌──────────────────┐
+                 │    ChatGroq      │
+                 │ gpt-oss-120b     │
+                 └────────┬─────────┘
+                          │
+                    Tool Calls
+                     /        \
+                    /          \
+                   ▼            ▼
+        ┌────────────────┐  ┌────────────────┐
+        │ Search Halls   │  │  Book Hall     │
+        │     Tool       │  │     Tool       │
+        └───────┬────────┘  └───────┬────────┘
+                │                   │
+                └─────────┬─────────┘
+                          ▼
+                  ┌───────────────┐
+                  │    SQLite     │
+                  │ wedding.db   │
+                  └───────────────┘
+```
+
+---
+
+# 🔄 LangGraph Workflow
+
+The system uses a simple agentic loop.
+
+```text
+START
+  ↓
+LLM Node
+  ↓
+Does the LLM request a tool?
+  │
+  ├── No ──→ END
+  │
+  └── Yes
+       ↓
+    ToolNode
+       ↓
+    Tool Result
+       ↓
+    LLM Node
+       ↓
+    Final Response
+```
+
+The graph is created using:
+
+```python
+graph_builder = StateGraph(State)
+
+graph_builder.add_node("llm", chatbot)
+graph_builder.add_node("tools", ToolNode(tools))
+
+graph_builder.add_edge(START, "llm")
+graph_builder.add_conditional_edges("llm", tools_condition)
+graph_builder.add_edge("tools", "llm")
+```
+
+This allows the LLM to decide when a database operation is required.
+
+---
+
+# 🧰 Task 9 Tools
+
+## 🔎 `search_halls_tool`
+
+The search tool accepts:
+
+```python
+capacity: int
+style: str
+food: str
+```
+
+Pydantic validation is provided through:
+
+```python
+SearchHallsInput
+```
+
+### Tool Workflow
+
+```text
+User Requirements
+       ↓
+LLM extracts:
+capacity
+style
+food
+       ↓
+search_halls_tool
+       ↓
+SQLite Query
+       ↓
+Available Halls
+       ↓
+LLM
+       ↓
+User
+```
+
+The database query checks that the hall capacity is sufficient:
 
 ```sql
-CREATE TABLE tickets (
-    id TEXT PRIMARY KEY,
-    name TEXT NOT NULL,
-    email TEXT NOT NULL,
-    query TEXT NOT NULL,
-    problem_type TEXT NOT NULL,
-    priority TEXT NOT NULL,
-    estimated_response_time TEXT,
-    created_at TIMESTAMP NOT NULL
-);
+SELECT name, capacity, style, food, price
+FROM halls
+WHERE capacity >= ?
 ```
 
-The database stores the customer's information, original query, classification result, priority, expected response time, and creation timestamp.
+The tool then formats the results for the LLM.
 
-## 🧪 Example Scenarios
+---
 
-### Single Issue
+# 📅 `book_hall_tool`
 
-```text
-Query:
-"I can't login to my account"
+The booking tool accepts:
 
-Result:
-1 ticket → Account → HIGH
+```python
+hall_name: str
+date: str
+customer_name: str
 ```
 
-### Multiple Issues
+The input is validated using:
 
-```text
-Query:
-"The system is down and I was charged twice!"
-
-Result:
-2 tickets
-
-Technical → HIGH
-Billing   → MEDIUM
+```python
+BookingDetails
 ```
 
-### Unsupported Query
+## Booking Workflow
 
 ```text
-Query:
-"Buy cheap watches now!"
-
-Result:
-No support ticket created.
-The system identifies the query as unsupported.
+Selected Hall
+      ↓
+Wedding Date
+      ↓
+Customer Name
+      ↓
+Check SQLite
+      ↓
+Is Date Available?
+   /           \
+ No             Yes
+ ↓               ↓
+ERROR          INSERT
+ ↓               ↓
+Ask for        SUCCESS
+another date      ↓
+              Confirm Booking
 ```
 
-## 🛠️ Technical Challenges & Solutions
+Before creating a booking, the system checks:
 
-### Challenge 1: Multi-Issue Queries
+```sql
+SELECT *
+FROM bookings
+WHERE hall_name = ?
+AND date = ?
+```
 
-**Problem:** A customer can mention multiple independent problems in a single message.
-
-**Solution:** The classification workflow identifies separate issues and creates an individual ticket for each problem, allowing them to be routed and prioritized independently.
-
-### Challenge 2: Conditional Workflow Routing
-
-**Problem:** Unsupported queries should not continue through the ticket creation pipeline.
-
-**Solution:** LangGraph conditional routing checks the classification result and terminates the workflow when the problem type is `NONE`.
-
-### Challenge 3: Persistent Ticket Management
-
-**Problem:** Tickets need to remain available after the application restarts.
-
-**Solution:** Implemented SQLite-based persistence with dedicated database operations for creating and retrieving tickets.
-
-### Challenge 4: API Integration
-
-**Problem:** The AI workflow needs to be accessible to external clients.
-
-**Solution:** Wrapped the LangGraph workflow with FastAPI REST endpoints and added Swagger/OpenAPI documentation for interactive testing.
-
-## 📊 System Specifications
-
-| Component                  | Technology            |
-| -------------------------- | --------------------- |
-| **LLM Provider**           | Groq                  |
-| **Model**                  | `openai/gpt-oss-120b` |
-| **Agent Framework**        | LangGraph             |
-| **API Framework**          | FastAPI               |
-| **Database**               | SQLite                |
-| **Data Validation**        | Pydantic              |
-| **Ticket IDs**             | UUID                  |
-| **Environment Management** | python-dotenv         |
-| **Language**               | Python                |
-
-## 🎓 Key Concepts Demonstrated
-
-### Agentic AI
-
-* ✅ LangGraph workflow orchestration
-* ✅ Conditional routing
-* ✅ LLM-based classification
-* ✅ Multi-step AI processing
-
-### Backend Engineering
-
-* ✅ FastAPI REST API development
-* ✅ Request/response validation
-* ✅ SQLite database integration
-* ✅ Persistent CRUD operations
-* ✅ API health monitoring
-
-### AI-Powered Automation
-
-* ✅ Automatic problem classification
-* ✅ Priority assignment
-* ✅ Multi-issue detection
-* ✅ Automated ticket generation
-* ✅ Email-based ticket retrieval
-
-## 📁 Project Structure
+If a booking already exists:
 
 ```text
-Task 8 - Customer Support Ticket System/
+ERROR:
+The hall is already booked on the requested date.
+```
+
+Otherwise, the system creates the booking:
+
+```sql
+INSERT INTO bookings
+(hall_name, date, customer_name)
+VALUES (?, ?, ?)
+```
+
+---
+
+# 🧠 Pydantic Models
+
+Task 9 uses Pydantic schemas to validate tool arguments.
+
+## `SearchHallsInput`
+
+```python
+class SearchHallsInput(BaseModel):
+    capacity: int = Field(
+        description="Exact guest count as an integer."
+    )
+
+    style: str = Field(
+        description="Preferred style."
+    )
+
+    food: str = Field(
+        description="Food preferences as a single string."
+    )
+```
+
+## `BookingDetails`
+
+```python
+class BookingDetails(BaseModel):
+    hall_name: str = Field(
+        description="The exact name of the hall to book"
+    )
+
+    date: str = Field(
+        description="The date for the wedding"
+    )
+
+    customer_name: str = Field(
+        description="The name of the customer booking the hall"
+    )
+```
+
+This gives the LLM a structured schema for generating valid tool-call arguments.
+
+---
+
+# 💬 Conversational Workflow
+
+The system is instructed to collect requirements **one by one** instead of assuming missing information.
+
+The expected conversation flow is:
+
+```text
+AI:
+Hello! How can I help you plan your wedding?
+
+User:
+I need a wedding hall.
+
+AI:
+How many guests are you expecting?
+
+User:
+250.
+
+AI:
+What type of hall style do you prefer?
+For example: Indoor or Outdoor.
+
+User:
+Outdoor.
+
+AI:
+What are your food preferences?
+
+User:
+Egyptian food.
+
+AI:
+[Calls search_halls_tool]
+
+AI:
+I found these available halls:
+
+- Royal Garden
+- Nile Palace
+- ...
+
+Which hall would you like to book?
+```
+
+After the user chooses a hall:
+
+```text
+AI:
+What date would you like to book it?
+
+User:
+2026-10-15
+
+AI:
+May I have your name?
+
+User:
+Bavly
+
+AI:
+[Calls book_hall_tool]
+
+AI:
+Congratulations! Your wedding hall has been booked successfully.
+```
+
+---
+
+# 🛡️ Tool Error Handling
+
+The system handles booking conflicts directly through tool results.
+
+### Hall Already Booked
+
+```text
+ERROR:
+The hall 'Royal Garden' is already booked on '2026-10-15'.
+Ask the user to choose another date or a different hall.
+```
+
+The LLM receives this result and can continue the conversation by asking the user for another option.
+
+### Successful Booking
+
+```text
+SUCCESS:
+'Royal Garden' has been booked successfully
+for Bavly on 2026-10-15.
+```
+
+The assistant then confirms the booking to the user.
+
+---
+
+# 🖥️ Streamlit User Interface
+
+A Streamlit chat interface provides the user-facing application.
+
+```text
+┌──────────────────────────────────────────┐
+│ 💍 AI Wedding Planner Agent              │
+├──────────────────────────────────────────┤
+│                                          │
+│ 🤖 Hello! How can I help you?            │
+│                                          │
+│ 👤 I need a hall for 200 guests.         │
+│                                          │
+│ 🤖 What style do you prefer?             │
+│                                          │
+│ 👤 Outdoor                               │
+│                                          │
+│ 🤖 What food would you prefer?            │
+│                                          │
+│ 👤 Egyptian food                         │
+│                                          │
+├──────────────────────────────────────────┤
+│ Type your message here...          [➤]   │
+└──────────────────────────────────────────┘
+```
+
+The conversation is maintained using Streamlit's:
+
+```python
+st.session_state
+```
+
+The complete message history is passed back to the LangGraph agent so the assistant can maintain context throughout the booking process.
+
+---
+
+# 🗄️ SQLite Database
+
+The application uses:
+
+```text
+wedding.db
+```
+
+The database contains information about wedding halls and bookings.
+
+Conceptually, the system uses:
+
+### `halls`
+
+```text
+name
+capacity
+style
+food
+price
+```
+
+### `bookings`
+
+```text
+hall_name
+date
+customer_name
+```
+
+The SQLite database provides persistent storage for available halls and completed bookings.
+
+---
+
+# 🔗 LangChain Tool Calling
+
+The tools are registered using LangChain's `@tool` decorator:
+
+```python
+@tool(
+    "search_halls_tool",
+    args_schema=SearchHallsInput
+)
+def search_halls_tool(...):
+    ...
+```
+
+and:
+
+```python
+@tool(
+    "book_hall_tool",
+    args_schema=BookingDetails
+)
+def book_hall_tool(...):
+    ...
+```
+
+Both tools are then bound to the Groq LLM:
+
+```python
+tools = [
+    search_halls_tool,
+    book_hall_tool
+]
+
+llm = llm.bind_tools(
+    tools,
+    parallel_tool_calls=False
+)
+```
+
+### Why disable parallel tool calls?
+
+The wedding planning process is sequential:
+
+```text
+Collect requirements
+       ↓
+Search halls
+       ↓
+User chooses hall
+       ↓
+Collect date + name
+       ↓
+Book hall
+```
+
+The system therefore uses:
+
+```python
+parallel_tool_calls=False
+```
+
+to keep tool execution aligned with this conversational workflow.
+
+---
+
+# 🧩 LangGraph State
+
+The graph maintains conversation messages using:
+
+```python
+class State(TypedDict):
+    messages: Annotated[list, add_messages]
+```
+
+The `add_messages` reducer allows new messages to be appended to the existing conversation state.
+
+The graph therefore maintains:
+
+```text
+HumanMessage
+      ↓
+AIMessage
+      ↓
+ToolMessage
+      ↓
+AIMessage
+      ↓
+HumanMessage
+      ↓
+...
+```
+
+Internal tool messages are preserved for the agent but are not directly displayed in the Streamlit UI.
+
+---
+
+# 🎯 System Prompt Design
+
+The agent is given explicit instructions defining the required workflow:
+
+```text
+1. Greet the user.
+2. Ask for guest capacity.
+3. Ask for preferred style.
+4. Ask for food preferences.
+5. Search halls after all criteria are available.
+6. Present halls and prices.
+7. Ask which hall to book.
+8. Ask for date and customer name.
+9. Check availability.
+10. Confirm successful booking or request another option.
+```
+
+A key design principle is:
+
+> **Do not assume missing information. Always ask the user.**
+
+This prevents the agent from inventing booking requirements.
+
+---
+
+# 🛠️ Technical Challenges & Solutions
+
+## Challenge 1: Maintaining Conversational Context
+
+### Problem
+
+The agent needs to remember previously collected requirements while the user provides information across multiple messages.
+
+### Solution
+
+The Streamlit application stores the message history in:
+
+```python
+st.session_state.messages
+```
+
+The complete message history is passed back to LangGraph for every interaction.
+
+### Result
+
+The agent can maintain context throughout the search and booking workflow.
+
+---
+
+## Challenge 2: Structured Tool Arguments
+
+### Problem
+
+The LLM needs to provide correctly formatted arguments when calling the database tools.
+
+### Solution
+
+Pydantic models are provided through `args_schema`:
+
+```python
+SearchHallsInput
+BookingDetails
+```
+
+### Result
+
+Tool arguments are explicitly structured and validated.
+
+---
+
+## Challenge 3: Booking Conflicts
+
+### Problem
+
+Two users should not be able to book the same hall on the same date.
+
+### Solution
+
+The booking tool performs an availability check before insertion:
+
+```sql
+SELECT *
+FROM bookings
+WHERE hall_name = ?
+AND date = ?
+```
+
+Only available bookings are inserted.
+
+### Result
+
+The application prevents duplicate bookings for the same hall and date.
+
+---
+
+## Challenge 4: Sequential Tool Execution
+
+### Problem
+
+Searching for halls must happen before booking a specific hall.
+
+### Solution
+
+The LLM is instructed to follow a sequential workflow, and parallel tool calls are disabled.
+
+```python
+llm.bind_tools(
+    tools,
+    parallel_tool_calls=False
+)
+```
+
+### Result
+
+The booking process follows the expected business sequence.
+
+---
+
+## Challenge 5: Connecting an Agent to a User Interface
+
+### Problem
+
+A command-line agent is less convenient for an interactive customer workflow.
+
+### Solution
+
+A Streamlit chat interface was built around the LangGraph agent.
+
+### Result
+
+The AI workflow becomes an interactive conversational application.
+
+---
+
+# 📊 Task 9 System Specifications
+
+| Component                  | Technology                          |
+| -------------------------- | ----------------------------------- |
+| **LLM Provider**           | Groq                                |
+| **Model**                  | `openai/gpt-oss-120b`               |
+| **Agent Framework**        | LangGraph                           |
+| **LLM Framework**          | LangChain                           |
+| **Tool Calling**           | LangChain Tools                     |
+| **Data Validation**        | Pydantic                            |
+| **Database**               | SQLite                              |
+| **Frontend**               | Streamlit                           |
+| **State Management**       | LangGraph + Streamlit Session State |
+| **Environment Management** | python-dotenv                       |
+| **Language**               | Python                              |
+
+---
+
+# 🧪 Example Scenarios
+
+## Scenario 1: Search for a Hall
+
+```text
+User:
+I need a hall for 300 guests.
+
+AI:
+What style do you prefer?
+
+User:
+Indoor.
+
+AI:
+What food would you prefer?
+
+User:
+Egyptian food.
+
+AI:
+[Calls search_halls_tool]
+
+AI:
+I found the following halls:
+...
+```
+
+---
+
+## Scenario 2: Successful Booking
+
+```text
+User:
+I want to book Royal Palace.
+
+AI:
+What date would you like?
+
+User:
+2026-10-15.
+
+AI:
+May I have your name?
+
+User:
+Bavly Waleed.
+
+AI:
+[Calls book_hall_tool]
+
+AI:
+SUCCESS! Royal Palace has been booked
+for Bavly Waleed on 2026-10-15.
+```
+
+---
+
+## Scenario 3: Booking Conflict
+
+```text
+User:
+Book Royal Palace for 2026-10-15.
+
+AI:
+[Calls book_hall_tool]
+
+Tool:
+ERROR: The hall is already booked on this date.
+
+AI:
+I'm sorry, Royal Palace is already booked on
+2026-10-15. Would you like to choose another
+date or another hall?
+```
+
+---
+
+# 📁 Task 9 Project Structure
+
+```text
+Task 9 - AI Wedding Planner/
 │
-├── agent/
-│   ├── __init__.py
-│   ├── nodes.py          # Classification and ticket creation nodes
-│   ├── edges.py          # Conditional routing logic
-│   └── agent.py          # LangGraph workflow
+├── graph.py
+│   # LangGraph workflow
+│   # LLM configuration
+│   # Tool definitions
 │
-├── database.py            # SQLite schema and operations
-├── main.py                # FastAPI server and endpoints
-├── test_api.py            # API testing
-├── requirements.txt       # Dependencies
-├── .env.example           # Environment configuration
-└── README.md              # Task documentation
+├── models.py
+│   # Pydantic tool schemas
+│   # SearchHallsInput
+│   # BookingDetails
+│
+├── app.py
+│   # Streamlit chat interface
+│
+├── wedding.db
+│   # SQLite database
+│
+├── requirements.txt
+│   # Project dependencies
+│
+├── .env.example
+│   # Environment variable template
+│
+└── README.md
+    # Task documentation
 ```
 
-## 🚀 How to Run
+---
+
+# 🚀 How to Run Task 9
+
+## 1. Install Dependencies
+
+```bash
+pip install langchain langchain-groq langchain-core langgraph
+pip install pydantic python-dotenv streamlit
+```
+
+Or:
 
 ```bash
 pip install -r requirements.txt
 ```
+
+---
+
+## 2. Configure API Key
 
 Create a `.env` file:
 
@@ -1837,109 +1509,146 @@ Create a `.env` file:
 GROQ_API_KEY=your_groq_api_key_here
 ```
 
-Start the FastAPI server:
-
-```bash
-python main.py
-```
-
-The API can then be tested through the FastAPI Swagger UI:
-
-```text
-http://localhost:8000/docs
-```
-
-## 🎯 Learning Outcomes
-
-This task demonstrates:
-
-1. **LangGraph Workflow Design** — Building a structured AI workflow with nodes and conditional edges.
-2. **LLM-Based Classification** — Using an LLM to understand and categorize natural-language support requests.
-3. **Multi-Issue Processing** — Converting one customer message into multiple independently managed tickets.
-4. **Backend API Development** — Exposing an AI workflow through FastAPI.
-5. **Database Integration** — Persisting AI-generated results using SQLite.
-6. **End-to-End AI Engineering** — Connecting an LLM, workflow engine, API layer, and database into a complete application.
+Never commit the actual API key.
 
 ---
 
+## 3. Prepare the Database
 
-# 🗂️ Project Structure
+Make sure:
+
+```text
+wedding.db
+```
+
+exists in the Task 9 directory and contains the required `halls` and `bookings` tables.
+
+---
+
+## 4. Start the Streamlit Application
+
+From the Task 9 directory:
+
+```bash
+streamlit run app.py
+```
+
+The application will open in the browser.
+
+---
+
+# 🎓 Task 9 Learning Outcomes
+
+This task demonstrates:
+
+1. **Tool-Calling Agents** — Connecting an LLM to real database operations.
+2. **LangGraph State Management** — Building an agentic workflow with graph-based execution.
+3. **Conditional Tool Routing** — Using `tools_condition` to determine whether tools should execute.
+4. **Structured Tool Inputs** — Using Pydantic schemas to validate LLM-generated arguments.
+5. **Database-Connected AI** — Connecting an LLM agent to SQLite.
+6. **Business Logic Integration** — Implementing real availability and booking rules.
+7. **Conversational Workflow Design** — Collecting requirements progressively.
+8. **Stateful UI** — Maintaining chat history through Streamlit session state.
+9. **Error Handling** — Returning meaningful results for unavailable halls and booking conflicts.
+10. **End-to-End AI Application Development** — Connecting LLM → Agent → Tools → Database → UI.
+
+---
+
+# 🔮 Potential Enhancements
+
+Future improvements could include:
+
+* [ ] Search by price range
+* [ ] Search by exact food type
+* [ ] Better style filtering
+* [ ] Date availability search before selecting a hall
+* [ ] Booking cancellation
+* [ ] Booking modification
+* [ ] Customer booking history
+* [ ] Multiple wedding events per customer
+* [ ] Authentication and user accounts
+* [ ] PostgreSQL instead of SQLite
+* [ ] FastAPI backend
+* [ ] Admin dashboard
+* [ ] Hall image previews
+* [ ] Payment integration
+* [ ] Email booking confirmations
+* [ ] Calendar integration
+* [ ] Multi-language support
+* [ ] Deployment to a cloud platform
+
+---
+
+# 🗂️ Complete Project Structure
 
 ```text
 .
 ├── Task 1/
 │   ├── task1.ipynb
-│   └── ...                       # Additional Task 1 assets
+│   └── ...
 │
 ├── Task 2 - langgraph/
 │   ├── agent/
-│   │   └── ...                   # Agent configuration and nodes
-│   │
+│   │   └── ...
 │   ├── database/
-│   │   └── schedule.db           # SQLite scheduling database
-│   │
+│   │   └── schedule.db
 │   ├── tools/
 │   │   ├── analytics_tool
 │   │   ├── location_tool
 │   │   └── scheduler_tool
-│   │
-│   └── main.py                   # Main execution script
+│   └── main.py
 │
 ├── Task 3/
-│   └── task3.ipynb               # Mistral 7B fine-tuning and LangChain integration
+│   └── task3.ipynb
 │
 ├── Task 4 - RAG/
-│   ├── pdfs/                     # Parallel computing knowledge base
-│   │   └── ...                   # 7 PDF documents
+│   ├── pdfs/
 │   ├── faiss_parallel_computing_index/
-│   └── task4.ipynb               # RAG pipeline implementation
+│   └── task4.ipynb
 │
 ├── Task 6 - Memory/
-│   ├── agent_with_memory.ipynb   # Conversational memory implementation
-│   └── conversation_log.json     # Saved conversation state
+│   ├── agent_with_memory.ipynb
+│   └── conversation_log.json
 │
 ├── 🎬 Mid-Project - Movie Recommender/
-│   ├── movie_recommender.ipynb   # Full implementation
+│   ├── movie_recommender.ipynb
 │   ├── data/
-│   │   ├── movies_metadata.csv   # 45K+ movies
-│   │   └── credits.csv           # Cast & crew
-│   ├── faiss_index/              # Vector store (44K documents)
-│   ├── memory/                   # Conversation storage
-│   ├── logs/                     # Performance logs
-│   └── my_watchlist.xlsx         # User watchlist
+│   │   ├── movies_metadata.csv
+│   │   └── credits.csv
+│   ├── faiss_index/
+│   ├── memory/
+│   ├── logs/
+│   └── my_watchlist.xlsx
 │
 ├── Task 7 - Multi-Agent Travel Planner/
-│   ├── multi_agent_travel_planner_final.ipynb   # Sequential agents
-│   └── README.md                                 # Task 7 docs
-│
+│   ├── multi_agent_travel_planner_final.ipynb
+│   └── README.md
 │
 ├── Task 8 - Customer Support Ticket System/
 │   ├── agent/
-│   │   ├── **init**.py
+│   │   ├── __init__.py
 │   │   ├── nodes.py
 │   │   ├── edges.py
 │   │   └── agent.py
-│   │
 │   ├── database.py
 │   ├── main.py
 │   ├── test_api.py
 │   ├── requirements.txt
 │   └── .env.example
-
 │
-├── .env                          # Environment variables
+├── Task 9 - AI Wedding Planner/
+│   ├── graph.py
+│   ├── models.py
+│   ├── app.py
+│   ├── wedding.db
+│   ├── requirements.txt
+│   └── .env.example
+│
+├── .env
 ├── .gitignore
 ├── README.md
-├── requirements.txt
-│
-├── Task 1 (Output Parser).pdf
-├── Task 2 (AI Agent).pdf
-├── Task 3 (Fine-Tuning).pdf
-├── Task 4 (RAG).pdf
-└── Task 7 (Multi-Agent Collaboration).pdf
+└── requirements.txt
 ```
-
-> **Security Note:** Make sure `.env` and any other files containing secrets are included in `.gitignore` and are never committed to the repository.
 
 ---
 
@@ -1976,13 +1685,11 @@ pip install -r requirements.txt
 
 ## 4. Configure Environment Variables
 
-Create a `.env` file in the root directory:
+Create a `.env` file:
 
 ```env
 GROQ_API_KEY=your_groq_api_key_here
 ```
-
-Replace `your_groq_api_key_here` with your actual Groq API key.
 
 ---
 
@@ -1995,13 +1702,35 @@ cd "Task 2 - langgraph"
 python main.py
 ```
 
-## Task 1, 3, 4, 6, 7, Mid-Project: Jupyter Notebooks
+## Task 8: Customer Support Ticket System
+
+```bash
+cd "Task 8 - Customer Support Ticket System"
+python main.py
+```
+
+The API can be tested through:
+
+```text
+http://localhost:8000/docs
+```
+
+## Task 9: AI Wedding Planner
+
+```bash
+cd "Task 9 - AI Wedding Planner"
+streamlit run app.py
+```
+
+## Jupyter Notebook Projects
+
+For Tasks 1, 3, 4, 6, 7, and the Movie Recommendation project:
 
 ```bash
 jupyter notebook
 ```
 
-Then open the respective `.ipynb` files.
+Then open the corresponding notebook.
 
 ---
 
@@ -2014,7 +1743,8 @@ Then open the respective `.ipynb` files.
 * Guardrails
 * LangChain Output Parsers
 * LangChain Expression Language (LCEL)
-* Format instructions for JSON schemas
+* Format instructions
+* Structured tool schemas
 
 ## Agentic AI
 
@@ -2023,90 +1753,117 @@ Then open the respective `.ipynb` files.
 * Conditional graph routing
 * Stateful AI agents
 * Multi-tool orchestration
-* **Sequential multi-agent pipelines**
 * Agentic loops
 * Tool execution
-* ReAct (Reasoning + Acting) pattern
-* **Specialized agent roles**
+* ReAct pattern
+* Sequential multi-agent pipelines
+* Specialized agent roles
+* Database-connected agents
 
-## Vector Databases & Retrieval (RAG)
+## Vector Databases & Retrieval
 
-* Document parsing and chunking
-* Semantic search and embeddings
-* FAISS Vector Database integration
-* Large-scale indexing (44K+ documents)
-* Retrieval-Augmented Generation pipelines
-* Anti-hallucination prompting techniques
+* Document parsing
+* Chunking
+* Semantic search
+* Embeddings
+* FAISS
+* Large-scale indexing
+* RAG pipelines
+* Anti-hallucination prompting
 * Persistent vector stores
 
 ## Memory & State Management
 
 * Rolling conversation summaries
 * Token-efficient memory windows
-* **ConversationBufferWindowMemory (k=4)**
-* Object-Oriented Bot Architectures for session state
-* JSON persistence for saving and loading conversation histories
+* `ConversationBufferWindowMemory`
+* LangGraph message state
+* Streamlit session state
+* JSON persistence
 * Full conversation backups
-* **Context retention across agent calls**
+* Context retention across agent calls
 
 ## Data & Backend Integration
 
-* Pydantic schema validation
-* **JsonOutputParser for universal LLM compatibility**
+* Pydantic validation
+* Structured tool arguments
+* SQLite
+* FastAPI
+* Streamlit
 * External API integration
-* Geolocation and timezone services
-* SQLite database integration
-* Excel file operations (XLSX)
+* Excel operations
 * Schedule conflict detection
-* ETL pipelines for large datasets
+* ETL pipelines
 * Fuzzy string matching
-* Environment and API-key management
-* **Type-safe dictionary access patterns**
+* Environment variable management
+* Database-backed AI workflows
 
 ## LLM Fine-Tuning
 
-* Parameter-Efficient Fine-Tuning (PEFT)
+* Parameter-Efficient Fine-Tuning
 * LoRA
-* 4-bit model quantization
+* 4-bit quantization
 * Hugging Face Transformers
-* `SFTTrainer`
-* Domain-specific assistant training
+* SFTTrainer
+* Domain-specific model adaptation
 
 ## Production Engineering
 
-* Error handling and graceful degradation
-* Retry logic for file operations
-* Performance monitoring and logging
-* Interactive user validation
-* Rate limit management
-* Data type compatibility handling
-* **API-specific workarounds (Groq compatibility)**
-* **Safe dictionary access with `.get()` methods**
-* **Type conversion for mixed LLM outputs**
+* Error handling
+* Graceful degradation
+* Retry logic
+* Performance monitoring
+* Logging
+* Rate-limit management
+* Data type compatibility
+* API-specific workarounds
+* Safe dictionary access
+* Database persistence
+* Business-rule validation
 
 ---
 
-# 🧠 Complete Architecture Summary
+# 🧠 Complete Architecture Progression
 
-The repository demonstrates a complete progression from foundational LLM concepts to production-ready AI systems:
+The repository demonstrates a progression from foundational LLM concepts to increasingly complete AI applications:
 
-**Foundation** → **Agents** → **Specialization** → **RAG** → **Memory** → **Multi-Agent Collaboration** → **Integration**
+```text
+Structured Outputs
+        ↓
+Tool-Using Agents
+        ↓
+LLM Fine-Tuning
+        ↓
+RAG
+        ↓
+Conversational Memory
+        ↓
+Full AI Application
+        ↓
+Multi-Agent Collaboration
+        ↓
+Backend AI Systems
+        ↓
+Database-Connected AI Applications
+```
 
-### **Progression Timeline**
+## 📈 Progression Timeline
 
-1. **Task 1**: Structured data extraction
-2. **Task 2**: Single agent with multiple tools
-3. **Task 3**: Domain-specific model specialization
-4. **Task 4**: Knowledge retrieval systems (RAG)
-5. **Task 6**: Stateful conversation management
-6. **Mid-Project**: Full application (RAG + Agents + Memory)
-7. **Task 7**: Multi-agent collaboration & sequential pipelines ✨
+1. **Task 1** — Structured data extraction
+2. **Task 2** — Single agent with multiple tools
+3. **Task 3** — Domain-specific LLM fine-tuning
+4. **Task 4** — Knowledge retrieval with RAG
+5. **Task 6** — Stateful conversation management
+6. **Mid-Project** — Full RAG + Agent + Memory application
+7. **Task 7** — Multi-agent collaboration
+8. **Task 8** — AI-powered backend ticket system
+9. **Task 9** — Database-connected conversational AI application
 
 ---
 
 # 🔐 Security
 
-API credentials and other secrets should always be stored in environment variables rather than hard-coded in source code.
+API credentials and other secrets should always be stored in environment variables.
 
 Example:
 
@@ -2114,7 +1871,7 @@ Example:
 GROQ_API_KEY=your_groq_api_key_here
 ```
 
-Add the following to `.gitignore`:
+Add sensitive files to `.gitignore`:
 
 ```gitignore
 .env
@@ -2122,14 +1879,22 @@ Add the following to `.gitignore`:
 __pycache__/
 *.pyc
 *.zip
+
 faiss_index/
 logs/
 memory/
 my_watchlist.xlsx
 conversation_log.json
+*.db
 ```
 
-Never commit actual API keys, tokens, passwords, or other credentials to GitHub.
+Never commit:
+
+* API keys
+* Access tokens
+* Passwords
+* Database files containing sensitive user information
+* Other credentials
 
 ---
 
@@ -2152,15 +1917,42 @@ This repository demonstrates the practical application of modern AI engineering 
 * Database-backed agents
 * Parameter-efficient fine-tuning
 * Domain-specific language models
-* Large-scale RAG systems (44K+ documents)
-* Retrieval-Augmented Generation (RAG) for localized knowledge bases
-* Conversational memory and persistent session management
-* **Multi-agent collaboration and orchestration** ✨
-* **Sequential agent pipelines with structured data flow** ✨
-* Production-ready conversational AI assistants
-* End-to-end application development
+* Large-scale RAG systems
+* Local knowledge-base RAG
+* Conversational memory
+* Persistent session management
+* Multi-agent collaboration
+* Sequential agent pipelines
+* AI-powered backend systems
+* Database-connected AI applications
+* Interactive conversational interfaces
+* Production-oriented error handling
 
-The overall progression demonstrates how modern AI systems can evolve from simple LLM interactions into structured, autonomous, stateful, specialized, **collaborative**, and production-ready AI applications that solve real-world problems through **intelligent agent coordination**.
+The overall progression demonstrates how modern AI systems can evolve from simple LLM interactions into **structured, autonomous, stateful, specialized, collaborative, and database-connected AI applications**.
+
+The projects collectively demonstrate the complete AI engineering cycle:
+
+```text
+User
+ ↓
+Natural Language
+ ↓
+LLM
+ ↓
+Structured Decision
+ ↓
+Agent / Workflow
+ ↓
+Tools
+ ↓
+External Systems / Database
+ ↓
+Business Logic
+ ↓
+Validated Result
+ ↓
+User Interface
+```
 
 ---
 
@@ -2170,4 +1962,4 @@ This project is created for educational purposes as part of AI Engineering cours
 
 ---
 
-**Last Updated**: September 21, 2026
+**Last Updated:** September 29, 2026
