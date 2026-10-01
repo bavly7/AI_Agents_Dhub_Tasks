@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Sales Agent</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 50px auto; padding: 20px; }
+        h1 { color: #333; }
+        select, button { padding: 10px 20px; font-size: 16px; margin: 10px 5px; }
+        button { background: #4CAF50; color: white; border: none; cursor: pointer; border-radius: 5px; }
+        button:hover { background: #45a049; }
+        #log { margin-top: 30px; padding: 20px; background: #f4f4f4; border-radius: 8px; min-height: 100px; }
+        .step { margin: 8px 0; font-size: 15px; }
+        .done { color: green; }
+        .running { color: orange; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+    <h1>🤖 AI Sales Agent</h1>
+    <p>Select your target industry and city:</p>
+
+    <select id="industry">
+        <option value="restaurants">Restaurants</option>
+        <option value="law firms">Law Firms</option>
+        <option value="clinics">Clinics</option>
+        <option value="real estate agencies">Real Estate Agencies</option>
+        <option value="hotels">Hotels</option>
+    </select>
+
+    <select id="city">
+        <option value="cairo egypt">Cairo, Egypt</option>
+        <option value="alexandria egypt">Alexandria, Egypt</option>
+        <option value="dubai uae">Dubai, UAE</option>
+        <option value="riyadh saudi arabia">Riyadh, Saudi Arabia</option>
+    </select>
+
+    <button onclick="runAgents()">🚀 Start Agents</button>
+
+    <div id="log">
+        <p style="color:#999">Results will appear here...</p>
+    </div>
+
+    <script>
+        function log(message, type="running") {
+            const div = document.getElementById("log");
+            div.innerHTML += `<div class="step ${type}">${message}</div>`;
+        }
+
+        async function runAgents() {
+            const industry = document.getElementById("industry").value;
+            const city = document.getElementById("city").value;
+            const query = `${industry} in ${city}`;
+
+            document.getElementById("log").innerHTML = "";
+            log(`🔍 Starting agents for: "${query}"`, "running");
+
+            const source = new EventSource(`/run?query=${encodeURIComponent(query)}`);
+
+            source.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+
+                if (data.done) {
+                    log("🎉 All agents finished!", "done");
+                    source.close();
+                    return;
+                }
+
+                if (data.run_prospector) {
+                    const leads = data.run_prospector.leads?.length || 0;
+                    log(`✅ Agent 1 done — found ${leads} companies`, "done");
+                    log("⏳ Agent 2 running...", "running");
+                }
+
+                if (data.run_scraper) {
+                    const qualified = data.run_scraper.qualified_leads?.length || 0;
+                    log(`✅ Agent 2 done — ${qualified} qualified`, "done");
+                    if (qualified > 0) log("⏳ Agent 3 running...", "running");
+                }
+
+                if (data.run_closer) {
+                    const sent = data.run_closer.emails_sent || 0;
+                    log(`✅ Agent 3 done — ${sent} emails sent`, "done");
+                }
+            };
+
+            source.onerror = () => {
+                log("❌ Something went wrong", "error");
+                source.close();
+            };
+        }
+    </script>
+</body>
+</html>

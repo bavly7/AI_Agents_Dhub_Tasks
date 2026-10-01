@@ -25,6 +25,7 @@ This repository serves as a showcase of practical AI engineering solutions desig
 | **Task 7: Multi-Agent Travel Planning System**        | Sequential multi-agent collaboration with conversational intake and specialized planning agents                 |
 | **Task 8: Customer Support Ticket System**            | AI-powered customer support ticket routing using LangGraph, FastAPI, Groq, and SQLite                           |
 | **Task 9: AI Wedding Planner Agent**                  | Tool-using wedding planning agent for searching and booking wedding halls with LangGraph, SQLite, and Streamlit |
+| **🚀 Final Project: LeadFlow AI**                     | Autonomous 3-agent sales pipeline — discovers leads, qualifies them with AI, and sends personalized cold emails |
 
 ---
 
@@ -1644,6 +1645,25 @@ Future improvements could include:
 │   ├── requirements.txt
 │   └── .env.example
 │
+├── 🚀 Final Project - LeadFlow AI/
+│   ├── agents/
+│   │   ├── agent1_prospector.py
+│   │   ├── agent2_scraper.py
+│   │   └── agent3_closer.py
+│   ├── database/
+│   │   ├── db.py
+│   │   ├── models.py
+│   │   └── leads.db
+│   ├── tools/
+│   │   └── email_tool.py
+│   ├── tests/
+│   │   ├── test_agent3.py
+│   │   └── test_email_generation.py
+│   ├── graph.py
+│   ├── main.py
+│   ├── requirements.txt
+│   └── .env.example
+│
 ├── .env
 ├── .gitignore
 ├── README.md
@@ -1722,6 +1742,13 @@ cd "Task 9 - AI Wedding Planner"
 streamlit run app.py
 ```
 
+## Final Project: LeadFlow AI
+
+```bash
+cd "Final Project - LeadFlow AI"
+python main.py
+```
+
 ## Jupyter Notebook Projects
 
 For Tasks 1, 3, 4, 6, 7, and the Movie Recommendation project:
@@ -1759,6 +1786,7 @@ Then open the corresponding notebook.
 * Sequential multi-agent pipelines
 * Specialized agent roles
 * Database-connected agents
+* Autonomous end-to-end pipelines
 
 ## Vector Databases & Retrieval
 
@@ -1797,6 +1825,8 @@ Then open the corresponding notebook.
 * Fuzzy string matching
 * Environment variable management
 * Database-backed AI workflows
+* SMTP email automation
+* Web scraping pipelines
 
 ## LLM Fine-Tuning
 
@@ -1820,6 +1850,8 @@ Then open the corresponding notebook.
 * Safe dictionary access
 * Database persistence
 * Business-rule validation
+* Diagnostic test suites
+* Environment path management
 
 ---
 
@@ -1845,6 +1877,8 @@ Multi-Agent Collaboration
 Backend AI Systems
         ↓
 Database-Connected AI Applications
+        ↓
+Autonomous AI Sales Agent
 ```
 
 ## 📈 Progression Timeline
@@ -1858,6 +1892,7 @@ Database-Connected AI Applications
 7. **Task 7** — Multi-agent collaboration
 8. **Task 8** — AI-powered backend ticket system
 9. **Task 9** — Database-connected conversational AI application
+10. **Final Project** — Fully autonomous multi-agent sales pipeline
 
 ---
 
@@ -1869,6 +1904,9 @@ Example:
 
 ```env
 GROQ_API_KEY=your_groq_api_key_here
+SMTP_USER=your_gmail@gmail.com
+SMTP_PASSWORD=your_app_password_here
+EMAIL_FROM=your_gmail@gmail.com
 ```
 
 Add sensitive files to `.gitignore`:
@@ -1895,6 +1933,326 @@ Never commit:
 * Passwords
 * Database files containing sensitive user information
 * Other credentials
+
+---
+
+# 🚀 Final Project: LeadFlow AI — Autonomous AI Sales Agent
+
+## 📋 Project Overview
+
+**LeadFlow AI** is a fully autonomous multi-agent sales automation system that finds business leads, qualifies them using AI, and sends personalized cold sales emails — all without human intervention.
+
+The system combines:
+
+* **LangGraph** multi-agent orchestration
+* **Groq LLM** for qualification and email generation
+* **Web scraping** for lead discovery and contact extraction
+* **Pydantic** structured outputs
+* **SQLite** persistent lead database
+* **SMTP** automated email delivery
+* **FastAPI** backend server
+
+---
+
+## 🎯 Objective
+
+Build a production-oriented autonomous sales pipeline that:
+
+1. **Discovers** business leads from the web using targeted search queries
+2. **Scrapes** each lead's website to extract contact information
+3. **Qualifies** leads using AI — checking if they are a good fit for the service
+4. **Generates** personalized cold sales emails using an LLM
+5. **Sends** those emails automatically via Gmail SMTP
+6. **Tracks** all activity in a SQLite database
+
+---
+
+## 🤖 What I Built
+
+### Three Specialized Agents
+
+#### Agent 1 — Prospector
+Searches the web for potential business leads based on a configurable search query (e.g., `"restaurants in Cairo Egypt"`). Returns a list of company names and URLs to investigate.
+
+#### Agent 2 — Scraper & Qualifier
+Visits each discovered URL, scrapes the website content, and uses the Groq LLM to:
+- Extract the company's contact email
+- Determine whether the company is a qualified lead (i.e., does not already have an AI chatbot)
+- Return a structured qualification result using Pydantic
+
+#### Agent 3 — Closer
+For every qualified lead in the database:
+- Calls the Groq LLM to write a personalized cold sales email offering AI chatbot services
+- Sends the email via Gmail SMTP
+- Marks the lead as emailed in the database
+
+---
+
+## 🏗️ Architecture
+
+```text
+                        LeadFlow AI
+                             │
+          ┌──────────────────┼──────────────────┐
+          │                  │                  │
+          ▼                  ▼                  ▼
+   ┌─────────────┐   ┌─────────────┐   ┌─────────────┐
+   │   Agent 1   │   │   Agent 2   │   │   Agent 3   │
+   │ Prospector  │   │   Scraper   │   │   Closer    │
+   │             │   │  Qualifier  │   │             │
+   └──────┬──────┘   └──────┬──────┘   └──────┬──────┘
+          │                  │                  │
+          ▼                  ▼                  ▼
+     Web Search          Groq LLM          Groq LLM
+     Lead URLs         Qualification     Email Writer
+                       + Extraction           │
+                            │                  ▼
+                            ▼            Gmail SMTP
+                        SQLite DB        Email Sent
+                       Lead Storage
+```
+
+---
+
+## 🔄 LangGraph Workflow
+
+```text
+START
+  ↓
+run_prospector
+  ↓
+run_scraper
+  ↓
+Any qualified leads?
+   /            \
+ Yes             No
+  ↓               ↓
+run_closer        END
+  ↓
+END
+```
+
+The graph uses a **conditional edge** between the scraper and the closer — emails are only sent when qualified leads exist.
+
+```python
+def should_send_emails(state: AgentState) -> str:
+    if len(state.get("qualified_leads", [])) > 0:
+        return "run_closer"
+    return END
+```
+
+---
+
+## 🧰 Pydantic Models
+
+### `Lead`
+
+```python
+class Lead(BaseModel):
+    company_name: str
+    url: str
+    email: Optional[str] = None
+    is_qualified: Optional[bool] = None
+    email_sent: bool = False
+    reason: Optional[str] = None
+```
+
+### `Qualifier`
+
+```python
+class Qualifier(BaseModel):
+    is_qualified: bool
+    extracted_email: Optional[str]
+    reason: str
+```
+
+### `Closer`
+
+```python
+class Closer(BaseModel):
+    subject: str
+    body: str
+```
+
+---
+
+## 📧 Email Generation
+
+The Closer agent prompts the Groq LLM to write a personalized cold email for each qualified lead:
+
+```text
+- Signed by: "The LeadFlow AI Team"
+- Highlights: 24/7 support, more bookings, instant FAQ handling
+- CTA: "Let's connect — reply or book a free 15-min demo"
+- Tone: confident, human, and compelling
+- Length: under 150 words
+```
+
+Example generated output:
+
+```
+Subject: Boost Your Guest Experience with an AI Chatbot
+
+Hi there,
+
+I'm reaching out from LeadFlow AI because we noticed Cairo Bites
+doesn't yet have an AI-powered chatbot — and we think it could
+transform your guest experience.
+
+Our chatbot handles reservations, answers menu questions, and
+collects feedback 24/7, freeing your team to focus on what matters.
+Setup takes under a week and requires zero coding on your end.
+
+Restaurants using our solution have seen a measurable increase
+in online bookings within the first month.
+
+Let's connect — reply to this email or book a free 15-minute
+demo to see it in action.
+
+Best regards,
+The LeadFlow AI Team
+```
+
+---
+
+## 🗄️ SQLite Database
+
+The system stores all lead activity in a persistent SQLite database:
+
+### `leads` table
+
+```text
+id
+company_name
+url
+email
+is_qualified
+email_sent
+reason
+created_at
+```
+
+Key operations:
+- `save_lead()` — stores each discovered lead
+- `get_qualified_leads()` — retrieves leads ready for outreach
+- `mark_email_sent()` — marks a lead after successful delivery
+
+---
+
+## 📁 Project Structure
+
+```text
+Final Project - LeadFlow AI/
+│
+├── agents/
+│   ├── agent1_prospector.py   # Web search & lead discovery
+│   ├── agent2_scraper.py      # Website scraping & qualification
+│   └── agent3_closer.py       # Email generation & sending
+│
+├── database/
+│   ├── db.py                  # SQLite operations
+│   ├── models.py              # Pydantic schemas & AgentState
+│   └── leads.db               # SQLite database
+│
+├── tools/
+│   └── email_tool.py          # Gmail SMTP email sender
+│
+├── tests/
+│   ├── test_agent3.py         # Full Agent 3 diagnostic test
+│   └── test_email_generation.py # Email content preview test
+│
+├── graph.py                   # LangGraph workflow definition
+├── main.py                    # Entry point
+├── requirements.txt
+├── .env.example
+└── README.md
+```
+
+---
+
+## ⚙️ System Specifications
+
+| Component            | Technology                  |
+| -------------------- | --------------------------- |
+| **LLM Provider**     | Groq                        |
+| **Model**            | `openai/gpt-oss-120b`       |
+| **Agent Framework**  | LangGraph                   |
+| **Data Validation**  | Pydantic v2                 |
+| **Database**         | SQLite                      |
+| **Email Delivery**   | Gmail SMTP (smtplib)        |
+| **Web Scraping**     | requests + BeautifulSoup    |
+| **Backend**          | FastAPI                     |
+| **Environment**      | python-dotenv               |
+| **Language**         | Python                      |
+
+---
+
+## 🚀 How to Run
+
+### 1. Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 2. Configure Environment Variables
+
+```env
+GROQ_API_KEY=your_groq_api_key_here
+SMTP_USER=your_gmail@gmail.com
+SMTP_PASSWORD=your_gmail_app_password
+EMAIL_FROM=your_gmail@gmail.com
+```
+
+> Gmail requires a **16-character App Password** generated from [myaccount.google.com/apppasswords](https://myaccount.google.com/apppasswords) with 2-Step Verification enabled.
+
+### 3. Run the Agent Pipeline
+
+```bash
+python main.py
+```
+
+### 4. Run Diagnostic Tests
+
+```bash
+# Test Agent 3 end-to-end (env, LLM, SMTP, send)
+python tests/test_agent3.py
+
+# Preview generated email content only
+python tests/test_email_generation.py
+```
+
+---
+
+## 🎓 Learning Outcomes
+
+This final project demonstrates:
+
+1. **Multi-Agent Orchestration** — Three specialized agents collaborating through LangGraph
+2. **Conditional Graph Routing** — Skipping email delivery when no qualified leads exist
+3. **Structured LLM Outputs** — Pydantic schemas for qualification and email generation
+4. **Web Scraping Pipeline** — Automated contact extraction from business websites
+5. **Database-Connected Agents** — SQLite persistence across the full pipeline
+6. **SMTP Email Automation** — Programmatic email delivery via Gmail
+7. **End-to-End AI Automation** — From web search to sent email with zero human input
+8. **Diagnostic Testing** — Step-by-step test suite validating each system component
+9. **Environment Management** — Robust `.env` loading across nested project directories
+10. **Production-Oriented Design** — Error handling, lead tracking, and email state management
+
+---
+
+## 🔮 Potential Enhancements
+
+* [ ] Add more target industries beyond restaurants
+* [ ] LinkedIn scraping for additional contact discovery
+* [ ] A/B testing different email templates
+* [ ] Email open and reply tracking
+* [ ] Streamlit dashboard for campaign monitoring
+* [ ] Scheduling — run the pipeline daily automatically
+* [ ] Multi-language email support
+* [ ] CRM integration (HubSpot, Notion)
+* [ ] Proxy rotation for large-scale scraping
+* [ ] Deployment to a cloud platform
 
 ---
 
@@ -1926,6 +2284,7 @@ This repository demonstrates the practical application of modern AI engineering 
 * AI-powered backend systems
 * Database-connected AI applications
 * Interactive conversational interfaces
+* Autonomous end-to-end AI pipelines
 * Production-oriented error handling
 
 The overall progression demonstrates how modern AI systems can evolve from simple LLM interactions into **structured, autonomous, stateful, specialized, collaborative, and database-connected AI applications**.
@@ -1951,7 +2310,7 @@ Business Logic
  ↓
 Validated Result
  ↓
-User Interface
+User Interface / Automated Action
 ```
 
 ---
@@ -1962,4 +2321,4 @@ This project is created for educational purposes as part of AI Engineering cours
 
 ---
 
-**Last Updated:** September 29, 2026
+**Last Updated:** October 1, 2026

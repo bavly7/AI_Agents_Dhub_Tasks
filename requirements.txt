@@ -24,3 +24,5 @@ fastapi
 uvicorn
 pydantic[email]
 streamlit
+tavily
+bs4
